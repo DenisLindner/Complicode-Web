@@ -68,6 +68,15 @@ export async function listMyChallenges(page = 1, limit = 12) {
   return { ...result, items: result.items.map(toSummary) };
 }
 
+/** Ready challenges their owners made public (the gallery). */
+export async function listPublicChallenges(page = 1, limit = 12) {
+  const result = await api<Paginated<ApiChallenge>>(
+    `/challenges/public?page=${page}&limit=${limit}`,
+    { auth: 'none' },
+  );
+  return { ...result, items: result.items.map(toSummary) };
+}
+
 /**
  * The challenge as the current visitor may see it (the owner sees every
  * version; others only public ones), or null when it does not exist for them.
