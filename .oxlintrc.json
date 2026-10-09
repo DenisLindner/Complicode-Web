@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "react", "nextjs", "jsx-a11y", "import", "vitest"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "typescript/no-floating-promises": "error",
+    "react/react-in-jsx-scope": "off",
+    "react/no-danger": "error",
+    "nextjs/no-html-link-for-pages": "off"
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "ignorePatterns": [".next", "node_modules", "coverage", "src/components/ui"]
+}
