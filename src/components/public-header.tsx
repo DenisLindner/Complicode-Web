@@ -16,11 +16,16 @@ export async function PublicHeader() {
         <Link href="/" aria-label="Complicode, página inicial">
           <Logo />
         </Link>
-        <nav aria-label="Principal" className="flex items-center gap-1.5">
+        <nav
+          aria-label="Principal"
+          className="flex items-center gap-1 sm:gap-1.5"
+        >
           <Button asChild variant="ghost" className="hidden sm:inline-flex">
             <Link href="/explorar">Explorar</Link>
           </Button>
-          <ThemeToggle />
+          <span className="hidden sm:contents">
+            <ThemeToggle />
+          </span>
           {loggedIn ? (
             <Button asChild>
               <Link href="/app">Abrir o app</Link>

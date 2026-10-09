@@ -20,7 +20,7 @@ export function InlineMarkdown({ text }: { text: string }) {
       return (
         <code
           key={index}
-          className="rounded-md bg-muted px-1.5 py-0.5 font-mono text-[0.85em] text-foreground"
+          className="rounded-md bg-muted px-1.5 py-0.5 font-mono text-[0.85em] [overflow-wrap:anywhere] text-foreground"
         >
           {part.slice(1, -1)}
         </code>

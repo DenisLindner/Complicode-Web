@@ -2,6 +2,35 @@
 
 Frontend do **Complicode**, o gerador de desafios técnicos que simulam problemas reais da indústria. Feito com Next.js 16 (App Router), React 19, Tailwind CSS 4 e shadcn/ui.
 
+## Páginas
+
+| Rota                   | O que tem                                                                                                              |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `/`                    | Landing: proposta, exemplo de desafio, como funciona, níveis, galeria, preços e perguntas                              |
+| `/explorar`            | Galeria de desafios públicos                                                                                           |
+| `/d/:id`               | Desafio público, com link compartilhável e cópia em markdown                                                           |
+| `/cadastro`, `/entrar` | Cadastro e login (validação nos dois lados, regras de senha ao vivo)                                                   |
+| `/boas-vindas`         | Onboarding: boas-vindas, código por email, telefone pelo Telegram (botão, QR code e acompanhamento automático) e bônus |
+| `/app`                 | Início: créditos, verificação e desafios recentes                                                                      |
+| `/app/gerar`           | Assistente: área, framework e nível, com custo e tela de progresso                                                     |
+| `/app/desafios`        | Meus desafios (paginado)                                                                                               |
+| `/app/desafios/:id`    | Briefing completo, sumário, versões, checklist de requisitos, markdown, regerar, público/privado e excluir             |
+| `/app/creditos`        | Saldo, pacote de 10 créditos (AbacatePay), extrato e pagamentos                                                        |
+
+Atalho `Ctrl/⌘ + K` no app: navegação, gerar desafio por área, tema e sair.
+
+### Rotas de servidor
+
+| Rota                                         | Uso                                                           |
+| -------------------------------------------- | ------------------------------------------------------------- |
+| `/bff/verificacao`                           | Status da verificação (polling do onboarding)                 |
+| `/bff/pagamentos/:id`                        | Status de um pagamento (volta do checkout)                    |
+| `/bff/desafios/:id/markdown`                 | Desafio em markdown (`?download=1` baixa o arquivo)           |
+| `/webhooks/abacatepay`, `/webhooks/telegram` | Repasse dos webhooks para a API (corpo e assinatura intactos) |
+| `/sessao-expirada`                           | Limpa uma sessão que a API recusou e volta ao login           |
+
+As rotas `/bff` só respondem a requisições do próprio site (`Sec-Fetch-Site` e `Origin`). Configure nos provedores os webhooks `https://<app>/webhooks/abacatepay` e `https://<app>/webhooks/telegram`.
+
 ## Segurança
 
 O navegador **nunca fala com a API** e **nunca vê um token**. O servidor do Next.js funciona como BFF (_Backend for Frontend_):

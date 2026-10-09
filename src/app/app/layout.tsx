@@ -1,13 +1,18 @@
 import { ArrowRight, Coins, Gift } from 'lucide-react';
 import Link from 'next/link';
 import { DesktopNav, MobileNav } from '@/components/app-nav';
+import { CommandMenu } from '@/components/command-menu';
 import { Logo } from '@/components/logo';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { UserMenu } from '@/components/user-menu';
+import { getStacks } from '@/lib/server/challenges';
 import { requireUser } from '@/lib/server/dal';
 
 export default async function AppLayout({ children }: LayoutProps<'/app'>) {
-  const user = await requireUser();
+  const [user, stacks] = await Promise.all([
+    requireUser(),
+    getStacks().catch(() => []),
+  ]);
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -20,6 +25,9 @@ export default async function AppLayout({ children }: LayoutProps<'/app'>) {
             <DesktopNav />
           </div>
           <div className="flex items-center gap-1.5">
+            <CommandMenu
+              stacks={stacks.map(({ slug, name }) => ({ slug, name }))}
+            />
             <Link
               href="/app/creditos"
               className="mr-1 inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-xs transition-colors hover:border-primary/50"
