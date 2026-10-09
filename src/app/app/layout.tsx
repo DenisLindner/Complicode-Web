@@ -20,14 +20,15 @@ export default async function AppLayout({ children }: LayoutProps<'/app'>) {
             <DesktopNav />
           </div>
           <div className="flex items-center gap-1.5">
-            <span
-              className="mr-1 inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-xs"
+            <Link
+              href="/app/creditos"
+              className="mr-1 inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-xs transition-colors hover:border-primary/50"
               title="Seus créditos"
             >
               <Coins className="size-3.5 text-brand" aria-hidden="true" />
               {user.credits}
               <span className="sr-only">créditos</span>
-            </span>
+            </Link>
             <ThemeToggle />
             <UserMenu name={user.name} email={user.email} />
           </div>

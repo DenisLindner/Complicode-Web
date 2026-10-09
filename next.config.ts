@@ -33,6 +33,13 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },
+  async redirects() {
+    // The API sends the user back from the checkout to FRONTEND_URL/credits
+    // (?payment=<id> is kept).
+    return [
+      { source: '/credits', destination: '/app/creditos', permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;
