@@ -1,4 +1,4 @@
-import { Coins } from 'lucide-react';
+import { ArrowRight, Coins, Gift } from 'lucide-react';
 import Link from 'next/link';
 import { Logo } from '@/components/logo';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -29,9 +29,30 @@ export default async function AppLayout({ children }: LayoutProps<'/app'>) {
           </div>
         </div>
       </header>
+      {!user.verified && <VerifyBanner />}
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
         {children}
       </main>
+    </div>
+  );
+}
+
+function VerifyBanner() {
+  return (
+    <div className="border-b bg-accent text-accent-foreground">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-2.5 text-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <p className="flex items-center gap-2">
+          <Gift className="size-4 shrink-0" aria-hidden="true" />
+          Confirme seu email e seu telefone e ganhe 2 créditos grátis.
+        </p>
+        <Link
+          href="/boas-vindas"
+          className="inline-flex items-center gap-1 font-medium underline-offset-4 hover:underline"
+        >
+          Continuar verificação
+          <ArrowRight className="size-3.5" aria-hidden="true" />
+        </Link>
+      </div>
     </div>
   );
 }

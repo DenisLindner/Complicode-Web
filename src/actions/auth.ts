@@ -67,7 +67,7 @@ export async function register(
     });
   }
 
-  redirect('/app');
+  redirect('/boas-vindas');
 }
 
 export async function logout() {
