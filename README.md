@@ -74,7 +74,16 @@ O `INTERNAL_API_KEY` precisa ser o mesmo configurado na API. Na API, `FRONTEND_U
 | `npm run lint`                | Oxlint (com regras de React, Next.js e acessibilidade) |
 | `npm run typecheck`           | TypeScript, incluindo os tipos de rotas do Next        |
 | `npm test`                    | Testes unitários (Vitest)                              |
+| `npm run test:e2e`            | Testes end-to-end (Playwright, veja abaixo)            |
 | `npm run format`              | Prettier (ordena as classes do Tailwind)               |
+
+### Testes end-to-end
+
+Rodam contra a stack real: suba a API (com `docker compose up -d` no repositório dela) e rode `npx playwright install chromium` uma vez. O Playwright faz o build e sobe o front se ele não estiver no ar.
+
+Cobrem login e cadastro, cookies da sessão (httpOnly, cifrados, invisíveis ao JavaScript), headers e CSP com nonce, redirecionamentos externos bloqueados, rotas `/bff` recusando outros sites, sessão adulterada, renovação do token com requisições paralelas, onboarding com o código lido do Mailpit e layout no celular. A geração de desafios fica de fora, porque gasta cota do Gemini e leva até um minuto.
+
+Cada teste simula um visitante com IP diferente (`X-Forwarded-For`) para não esbarrar no rate limit de login da API. Isso só funciona localmente, sem proxy na frente do Next.js.
 
 ## Identidade visual
 
