@@ -13,6 +13,11 @@ Navegador ──(cookie httpOnly cifrado)──► Next.js ──(Bearer + X-Int
 - `API_URL`, `INTERNAL_API_KEY` e `SESSION_SECRET` são variáveis só do servidor (nada usa `NEXT_PUBLIC_`). Elas são validadas no boot (`src/lib/server/env.ts`), e os módulos em `src/lib/server` importam `server-only`, então o build falha se um Client Component tentar usá-los.
 - CSP estrita com nonce por requisição (`src/proxy.ts`): só executam scripts com o nonce. Também há `frame-ancestors 'none'`, `object-src 'none'`, `base-uri` e `form-action` restritos.
 - Headers fixos em `next.config.ts`: HSTS, `nosniff`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` e COOP/CORP. Sem `X-Powered-By` e sem source maps no navegador.
+- **Sessão:** o access token (30 min) e o refresh token (3 dias) ficam em dois cookies `__Host-` com `HttpOnly`, `Secure` e `SameSite=Lax`, cifrados e autenticados com AES-256-GCM (JWE, `src/lib/server/seal.ts`). Cada cookie é ligado ao seu propósito, então um não pode ser trocado pelo outro, e qualquer alteração invalida a sessão.
+- **Renovação:** acontece só no `proxy.ts`, antes da página renderizar, quando faltar menos de 1 minuto para o access token expirar. O Keycloak rotaciona o refresh token e não aceita reuso, então requisições paralelas com o mesmo token compartilham uma única renovação (`src/lib/server/refresh.ts`). Com mais de uma instância, use sessões fixas (sticky sessions).
+- **Autorização:** o `proxy.ts` faz só a checagem otimista (redireciona para `/entrar`). Toda página e Server Action chama a camada de dados (`src/lib/server/dal.ts`), que valida a sessão com a API.
+- **Formulários:** os mesmos schemas zod validam no navegador e de novo na Server Action. As Server Actions já checam a `Origin` (CSRF), e o `?next=` do login só aceita caminhos internos.
+- **Rate limit:** o servidor envia à API o IP real do usuário em `X-Client-IP`, tirado da entrada de `X-Forwarded-For` adicionada pelo proxy confiável (`TRUSTED_PROXY_HOPS`).
 - As páginas são renderizadas por requisição, o que o nonce exige; por isso o `cacheComponents` está desligado.
 - Dependabot e CI com `npm audit` das dependências de produção.
 
