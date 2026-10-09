@@ -1,5 +1,6 @@
 import { ArrowRight, Coins, Gift } from 'lucide-react';
 import Link from 'next/link';
+import { DesktopNav, MobileNav } from '@/components/app-nav';
 import { Logo } from '@/components/logo';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { UserMenu } from '@/components/user-menu';
@@ -12,9 +13,12 @@ export default async function AppLayout({ children }: LayoutProps<'/app'>) {
     <div className="flex min-h-dvh flex-col">
       <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur supports-backdrop-filter:bg-background/70">
         <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-          <Link href="/app" aria-label="Complicode, início">
-            <Logo />
-          </Link>
+          <div className="flex items-center gap-6">
+            <Link href="/app" aria-label="Complicode, início">
+              <Logo />
+            </Link>
+            <DesktopNav />
+          </div>
           <div className="flex items-center gap-1.5">
             <span
               className="mr-1 inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-xs"
@@ -30,9 +34,10 @@ export default async function AppLayout({ children }: LayoutProps<'/app'>) {
         </div>
       </header>
       {!user.verified && <VerifyBanner />}
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-8 pb-28 sm:px-6 md:pb-12">
         {children}
       </main>
+      <MobileNav />
     </div>
   );
 }
