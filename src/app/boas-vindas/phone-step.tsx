@@ -153,10 +153,8 @@ export function PhoneStep() {
                   <span className="relative inline-flex size-2.5 rounded-full bg-primary" />
                 </span>
                 <p>
-                  <output>
-                    Aguardando a confirmação no Telegram…
-                  </output>{' '}
-                  O link expira em{' '}
+                  <output>Aguardando a confirmação no Telegram…</output> O link
+                  expira em{' '}
                   <span className="font-mono text-foreground tabular-nums">
                     {Math.floor(expiresIn / 60)}:
                     {String(expiresIn % 60).padStart(2, '0')}
