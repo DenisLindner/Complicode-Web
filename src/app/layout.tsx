@@ -1,15 +1,31 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import {
+  Bricolage_Grotesque,
+  Caveat,
+  Geist_Mono,
+  Hanken_Grotesk,
+} from 'next/font/google';
 import { headers } from 'next/headers';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import './globals.css';
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
+const display = Bricolage_Grotesque({
+  variable: '--font-display',
+  subsets: ['latin'],
+  axes: ['opsz'],
+});
+const body = Hanken_Grotesk({ variable: '--font-body', subsets: ['latin'] });
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+});
+// Only for the handwritten notes on the landing page.
+const handwriting = Caveat({
+  variable: '--font-handwriting',
+  subsets: ['latin'],
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -35,7 +51,8 @@ export default async function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html
       lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      data-scroll-behavior="smooth"
+      className={`${display.variable} ${body.variable} ${geistMono.variable} ${handwriting.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">

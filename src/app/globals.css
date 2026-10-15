@@ -7,9 +7,16 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-body);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-geist-sans);
+  --font-heading: var(--font-display);
+  --font-hand: var(--font-handwriting);
+  --color-cream: var(--cream);
+  --color-espresso: var(--espresso);
+  --color-espresso-foreground: var(--espresso-foreground);
+  --color-espresso-muted: var(--espresso-muted);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -43,6 +50,8 @@
  * Warm off-white / near-black with caramel (#EC8F39). Caramel is a fill color:
  * as text on the light background it only reaches 2.3:1, so text uses
  * --brand (4.7:1 on light, 7.5:1 on dark). Every text pair is >= 4.5:1.
+ * Cream tints the hero blocks (--brand still reaches 4.5:1 on it) and
+ * espresso is the dark color block, like the teal one on abacatepay.com.
  */
 :root {
   --background: #faf7f2;
@@ -68,6 +77,11 @@
   --input: #ddd4c7;
   --ring: #ec8f39;
   --radius: 0.625rem;
+  --cream: #fff1de;
+  --espresso: #2b2019;
+  --espresso-foreground: #f6ecdf;
+  --espresso-muted: #c9b9a6;
+  --dots: color-mix(in oklch, var(--foreground) 14%, transparent);
 }
 
 .dark {
@@ -93,6 +107,11 @@
   --border: #2f2a25;
   --input: #38322c;
   --ring: #ec8f39;
+  --cream: #201913;
+  --espresso: #0f0c0a;
+  --espresso-foreground: #f6ecdf;
+  --espresso-muted: #c9b9a6;
+  --dots: color-mix(in oklch, var(--foreground) 12%, transparent);
 }
 
 @layer base {
@@ -102,12 +121,24 @@
   html {
     @apply font-sans;
     color-scheme: light;
+    /* Same header width whether or not the page scrolls. */
+    scrollbar-gutter: stable;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
   html.dark {
     color-scheme: dark;
   }
   body {
     @apply bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
   }
   ::selection {
     @apply bg-primary/30;
@@ -118,7 +149,133 @@
   }
 }
 
+/*
+ * Motion. Entrances take a --d delay so siblings can stagger:
+ * <h1 className="rise" style={{ '--d': '80ms' }}>. `reveal` plays the same
+ * rise while the element scrolls into view; without scroll-driven animations
+ * it simply shows.
+ */
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+}
+@keyframes rise-zoom {
+  from {
+    opacity: 0;
+    translate: 0 48px;
+    scale: 0.96;
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+}
+@keyframes marquee {
+  to {
+    translate: -50% 0;
+  }
+}
+@keyframes tick {
+  from {
+    background-color: transparent;
+    border-color: var(--input);
+  }
+  to {
+    background-color: var(--primary);
+    border-color: var(--primary);
+  }
+}
+
+@keyframes grow {
+  from {
+    scale: 0 1;
+  }
+}
+
+@utility rise {
+  animation: rise 0.8s var(--ease-out) var(--d, 0s) backwards;
+}
+@utility rise-zoom {
+  animation: rise-zoom 1s var(--ease-out) var(--d, 0s) backwards;
+}
+@utility pop {
+  animation: pop 0.6s var(--ease-spring) var(--d, 0s) backwards;
+}
+@utility reveal {
+  @supports (animation-timeline: view()) {
+    animation: rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+}
+/* Transparent header that turns solid after the first 80px of scroll. */
+@keyframes header-solid {
+  from {
+    border-color: transparent;
+    background-color: transparent;
+  }
+  to {
+    border-color: var(--border);
+    background-color: color-mix(in oklch, var(--background) 85%, transparent);
+  }
+}
+@utility header-scroll {
+  @supports (animation-timeline: scroll()) {
+    animation: header-solid linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 80px;
+  }
+}
+
+@utility reveal-grow {
+  transform-origin: left;
+  @supports (animation-timeline: view()) {
+    animation: grow linear both;
+    animation-timeline: view();
+    animation-range: entry 40% cover 45%;
+  }
+}
+@utility marquee {
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+/* <details> that opens and closes smoothly where ::details-content exists. */
+@utility details-animate {
+  interpolate-size: allow-keywords;
+  &::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    transition:
+      block-size 0.35s var(--ease-out),
+      content-visibility 0.35s allow-discrete;
+  }
+  &[open]::details-content {
+    block-size: auto;
+  }
+}
+
+/* Textures: dot grid and graph paper, tinted by --dots. */
+@utility bg-dots {
+  background-image: radial-gradient(var(--dots) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+@utility bg-graph {
+  background-image:
+    linear-gradient(var(--dots) 1px, transparent 1px),
+    linear-gradient(90deg, var(--dots) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-grow,
+  .marquee {
+    animation: none !important;
+  }
   *,
   *::before,
   *::after {
