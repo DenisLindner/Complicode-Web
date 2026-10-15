@@ -4,18 +4,18 @@ Frontend do **Complicode**, o gerador de desafios técnicos que simulam problema
 
 ## Páginas
 
-| Rota                   | O que tem                                                                                                              |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `/`                    | Landing: proposta, exemplo de desafio, como funciona, níveis, galeria, preços e perguntas                              |
-| `/explorar`            | Galeria de desafios públicos                                                                                           |
-| `/d/:id`               | Desafio público, com link compartilhável e cópia em markdown                                                           |
-| `/cadastro`, `/entrar` | Cadastro e login (validação nos dois lados, regras de senha ao vivo)                                                   |
-| `/boas-vindas`         | Onboarding: boas-vindas, código por email, telefone pelo Telegram (botão, QR code e acompanhamento automático) e bônus |
-| `/app`                 | Início: créditos, verificação e desafios recentes                                                                      |
-| `/app/gerar`           | Assistente: área, framework e nível, com custo e tela de progresso                                                     |
-| `/app/desafios`        | Meus desafios (paginado)                                                                                               |
-| `/app/desafios/:id`    | Briefing completo, sumário, versões, checklist de requisitos, markdown, regerar, público/privado e excluir             |
-| `/app/creditos`        | Saldo, pacote de 10 créditos (AbacatePay), extrato e pagamentos                                                        |
+| Rota                   | O que tem                                                                                                               |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `/`                    | Landing: hero com o produto, simulador de desafio por área e nível, anatomia do briefing, níveis, galeria, preços e FAQ |
+| `/explorar`            | Galeria de desafios públicos                                                                                            |
+| `/d/:id`               | Desafio público, com link compartilhável e cópia em markdown                                                            |
+| `/cadastro`, `/entrar` | Cadastro e login (validação nos dois lados, regras de senha ao vivo)                                                    |
+| `/boas-vindas`         | Onboarding: boas-vindas, código por email, telefone pelo Telegram (botão, QR code e acompanhamento automático) e bônus  |
+| `/app`                 | Início: créditos, verificação e desafios recentes                                                                       |
+| `/app/gerar`           | Assistente: área, framework e nível, com custo e tela de progresso                                                      |
+| `/app/desafios`        | Meus desafios (paginado)                                                                                                |
+| `/app/desafios/:id`    | Briefing completo, sumário, versões, checklist de requisitos, markdown, regerar, público/privado e excluir              |
+| `/app/creditos`        | Saldo, pacote de 10 créditos (AbacatePay), extrato e pagamentos                                                         |
 
 Atalho `Ctrl/⌘ + K` no app: navegação, gerar desafio por área, tema e sair.
 
@@ -88,6 +88,17 @@ Cada teste simula um visitante com IP diferente (`X-Forwarded-For`) para não es
 ## Identidade visual
 
 Fundo off-white quente (`#FAF7F2`) no modo claro e quase preto quente (`#161412`) no escuro, com o caramelo `#EC8F39` como cor de destaque. Como o caramelo tem contraste baixo sobre fundo claro (2,3:1), ele é usado como preenchimento; textos em caramelo usam o token `brand` (`#A95A12` no claro, 4,7:1). Todos os pares de texto têm contraste de pelo menos 4,5:1 (WCAG AA). Os tokens ficam em `src/app/globals.css`.
+
+A estrutura da landing segue a da [AbacatePay](https://www.abacatepay.com/): seções em blocos arredondados de cor, com creme (`cream`, `#FFF1DE`) no hero e café (`espresso`, `#2B2019`) no bloco escuro. Os títulos usam Bricolage Grotesque, o texto Hanken Grotesk, o código Geist Mono e as anotações manuscritas Caveat (todas servidas pelo `next/font`, sem requisição ao Google).
+
+As animações são CSS, sem biblioteca:
+
+- `rise`, `rise-zoom` e `pop`: entradas, escalonadas com `--d` (`style={delay(80)}`, de `src/lib/motion.ts`)
+- `reveal` e `reveal-grow`: a mesma entrada ao rolar até o elemento (scroll-driven animations; sem suporte, o elemento só aparece)
+- `marquee`, `header-scroll` e `details-animate`: faixa de frameworks, header que fica sólido ao rolar e FAQ que abre suave
+- rolagem suave nos links de âncora (`/#precos`); com `data-scroll-behavior="smooth"` no `<html>`, a troca de página continua instantânea
+
+Todas respeitam `prefers-reduced-motion`. O `<html>` reserva o espaço da barra de rolagem (`scrollbar-gutter: stable`) para o header não mudar de largura entre páginas que rolam e páginas que não rolam.
 
 ## Git flow
 

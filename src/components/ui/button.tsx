@@ -18,6 +18,8 @@ const buttonVariants = cva(
         destructive:
           'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40',
         link: 'text-brand underline-offset-4 hover:underline',
+        espresso:
+          'bg-espresso text-espresso-foreground hover:bg-[color-mix(in_oklch,var(--espresso),white_14%)] focus-visible:border-espresso focus-visible:ring-espresso/40',
       },
       size: {
         default:
@@ -25,6 +27,7 @@ const buttonVariants = cva(
         xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
         sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
         lg: 'h-10 gap-2 px-4 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3',
+        xl: "h-12 gap-2 rounded-full px-6 text-base duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_12px_24px_-12px_color-mix(in_oklch,var(--espresso)_70%,transparent)] has-data-[icon=inline-end]:pr-5 has-data-[icon=inline-start]:pl-5 hover:[&_[data-icon=inline-end]]:translate-x-1 [&_svg]:transition-transform [&_svg]:duration-200 [&_svg:not([class*='size-'])]:size-4.5",
         icon: 'size-8',
         'icon-xs':
           "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
