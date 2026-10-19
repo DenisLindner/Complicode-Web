@@ -13,9 +13,7 @@ export function ChallengeCard({
   href: string;
   showVisibility?: boolean;
 }) {
-  const title =
-    challenge.title ??
-    (challenge.status === 'FAILED' ? 'Geração falhou' : 'Gerando desafio…');
+  const title = challenge.title ?? 'Gerando desafio…';
 
   return (
     <Link

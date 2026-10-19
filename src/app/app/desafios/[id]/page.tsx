@@ -1,12 +1,10 @@
-import { ArrowLeft, CircleAlert, Loader2, RotateCcw } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { AutoRefresh } from '@/components/auto-refresh';
 import { ChallengeView } from '@/components/challenge/challenge-view';
-import { Button } from '@/components/ui/button';
 import { getChallenge } from '@/lib/server/challenges';
-import { LEVELS } from '@/lib/levels';
 
 export async function generateMetadata({
   params,
@@ -54,28 +52,6 @@ export default async function ChallengePage({
             Isso leva de 20 a 60 segundos. Esta página atualiza sozinha quando
             ele ficar pronto.
           </p>
-        </div>
-      )}
-
-      {challenge.status === 'FAILED' && (
-        <div className="flex flex-col items-center gap-3 rounded-2xl border bg-card px-6 py-16 text-center">
-          <CircleAlert className="size-8 text-destructive" aria-hidden="true" />
-          <h1 className="text-xl font-semibold">
-            Não foi possível gerar este desafio
-          </h1>
-          <p className="max-w-md text-sm text-muted-foreground">
-            A IA não respondeu a tempo. Seu crédito já foi devolvido; tente de
-            novo com as mesmas escolhas.
-          </p>
-          <Button asChild className="mt-2">
-            <Link
-              href={`/app/gerar?stack=${challenge.stack.slug}&framework=${challenge.framework.slug}&nivel=${challenge.level}`}
-            >
-              <RotateCcw />
-              Tentar de novo ({challenge.stack.name} ·{' '}
-              {challenge.framework.name} · {LEVELS[challenge.level].label})
-            </Link>
-          </Button>
         </div>
       )}
 
