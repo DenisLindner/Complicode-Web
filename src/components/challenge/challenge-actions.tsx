@@ -10,7 +10,7 @@ import {
   RefreshCw,
   Trash2,
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 import { useState, useTransition } from 'react';
 import { toast } from 'sonner';
 import {
@@ -37,6 +37,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { getPathname, useRouter } from '@/i18n/navigation';
+import type { Locale } from '@/i18n/routing';
 
 export function ChallengeActions({
   id,
@@ -49,10 +51,16 @@ export function ChallengeActions({
   canRegenerate: boolean;
   onRegenerating: (regenerating: boolean) => void;
 }) {
+  const t = useTranslations('challenge.actions');
+  const locale = useLocale() as Locale;
   const router = useRouter();
   const [dialog, setDialog] = useState<'regenerate' | 'delete' | null>(null);
   const [pending, startTransition] = useTransition();
-  const publicUrl = () => `${window.location.origin}/d/${id}`;
+  const publicUrl = () =>
+    `${window.location.origin}${getPathname({
+      href: { pathname: '/c/[id]', params: { id } },
+      locale,
+    })}`;
 
   const toggleVisibility = () =>
     startTransition(async () => {
@@ -62,10 +70,10 @@ export function ChallengeActions({
         return;
       }
       if (isPublic) {
-        toast.success('O desafio agora é privado.');
+        toast.success(t('nowPrivate'));
       } else {
         await navigator.clipboard.writeText(publicUrl()).catch(() => undefined);
-        toast.success('Desafio público! O link foi copiado.');
+        toast.success(t('nowPublic'));
       }
       router.refresh();
     });
@@ -77,7 +85,7 @@ export function ChallengeActions({
       const result = await regenerateChallenge(id);
       onRegenerating(false);
       if (result.ok) {
-        toast.success('Nova versão gerada! A anterior continua salva.');
+        toast.success(t('newVersion'));
         router.refresh();
       } else {
         toast.error(result.error);
@@ -97,9 +105,9 @@ export function ChallengeActions({
       <div className="flex flex-wrap items-center gap-2">
         <CopyMarkdownButton id={id} />
         <Button variant="outline" asChild>
-          <a href={`/bff/desafios/${id}/markdown?download=1`} download>
+          <a href={`/bff/challenges/${id}/markdown?download=1`} download>
             <Download />
-            Baixar .md
+            {t('download')}
           </a>
         </Button>
         {canRegenerate && (
@@ -109,12 +117,12 @@ export function ChallengeActions({
             disabled={pending}
           >
             <RefreshCw />
-            Regerar
+            {t('regenerate')}
           </Button>
         )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" aria-label="Mais ações">
+            <Button variant="ghost" size="icon" aria-label={t('more')}>
               {pending ? (
                 <Loader2 className="animate-spin" />
               ) : (
@@ -125,17 +133,17 @@ export function ChallengeActions({
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuItem onSelect={toggleVisibility}>
               {isPublic ? <Lock /> : <Globe />}
-              {isPublic ? 'Tornar privado' : 'Tornar público'}
+              {isPublic ? t('makePrivate') : t('makePublic')}
             </DropdownMenuItem>
             {isPublic && (
               <DropdownMenuItem
                 onSelect={async () => {
                   await navigator.clipboard.writeText(publicUrl());
-                  toast.success('Link público copiado.');
+                  toast.success(t('linkCopied'));
                 }}
               >
                 <Link2 />
-                Copiar link público
+                {t('copyLink')}
               </DropdownMenuItem>
             )}
             <DropdownMenuSeparator />
@@ -144,7 +152,7 @@ export function ChallengeActions({
               onSelect={() => setDialog('delete')}
             >
               <Trash2 />
-              Excluir desafio
+              {t('delete')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -156,18 +164,16 @@ export function ChallengeActions({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Regerar este desafio?</AlertDialogTitle>
+            <AlertDialogTitle>{t('regenerateTitle')}</AlertDialogTitle>
             <AlertDialogDescription>
-              É grátis, mas só dá para regerar uma vez. A IA cria um desafio
-              novo com a mesma stack e o mesmo nível, e a versão atual continua
-              salva para você comparar.
+              {t('regenerateText')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={regenerate}>
               <RefreshCw />
-              Regerar
+              {t('regenerate')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -179,17 +185,14 @@ export function ChallengeActions({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Excluir este desafio?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Ele some da sua lista e, se for público, da galeria. Essa ação não
-              pode ser desfeita e o crédito não é devolvido.
-            </AlertDialogDescription>
+            <AlertDialogTitle>{t('deleteTitle')}</AlertDialogTitle>
+            <AlertDialogDescription>{t('deleteText')}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
             <AlertDialogAction variant="destructive" onClick={remove}>
               <Trash2 />
-              Excluir
+              {t('deleteConfirm')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

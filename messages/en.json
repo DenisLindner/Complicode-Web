@@ -1,0 +1,679 @@
+{
+  "dashboard": {
+    "meta": "Home",
+    "greeting": "Hi, {name}",
+    "ready": "Ready for the next challenge?",
+    "noCredits": "You're out of credits right now.",
+    "generate": "Generate challenge",
+    "credits": "Credits",
+    "earnFree": "Get 2 free",
+    "generated": "Challenges generated",
+    "seeAll": "See all",
+    "verification": "Verification",
+    "complete": "Complete",
+    "progress": "{done} of 2",
+    "continue": "Continue",
+    "recent": "Recent challenges",
+    "empty": "You haven't generated any challenge yet.",
+    "first": "Generate the first one"
+  },
+  "myChallenges": {
+    "meta": "My challenges",
+    "title": "My challenges",
+    "count": "{count, plural, one {# challenge generated} other {# challenges generated}}",
+    "emptyLead": "Your challenges show up here.",
+    "generate": "Generate challenge",
+    "removed": "Challenge deleted.",
+    "emptyTitle": "No challenges yet",
+    "emptyText": "Pick your stack and level and get a complete briefing, based on a real company problem.",
+    "emptyCta": "Generate my first challenge"
+  },
+  "generator": {
+    "meta": "Generate challenge",
+    "title": "Generate challenge",
+    "lead": "Choose where you want to practice. The challenge simulates a real company problem, at your level.",
+    "areaTitle": "Area",
+    "areaText": "Where the project focuses.",
+    "frameworkTitle": "Framework",
+    "frameworkText": "Frameworks available for {stack}.",
+    "frameworkTextEmpty": "Pick an area first.",
+    "frameworkPlaceholder": "The frameworks show up here.",
+    "levelTitle": "Level",
+    "levelText": "Defines the scope, the deadline and what is evaluated.",
+    "pick": "Pick the area, the framework and the level",
+    "cost": "Costs 1 credit · you have {credits}",
+    "generate": "Generate challenge",
+    "buy": "Buy credits",
+    "earn": "Get 2 free credits"
+  },
+  "generating": {
+    "title": "Generating your challenge",
+    "newVersion": "Generating the new version",
+    "phase1": "Choosing a real industry problem",
+    "phase2": "Writing the company context",
+    "phase3": "Detailing the functional requirements",
+    "phase4": "Defining the non-functional requirements",
+    "phase5": "Selecting the supporting technologies",
+    "phase6": "Putting the implementation guide together",
+    "phase7": "Reviewing the evaluation criteria",
+    "note": "This takes 20 to 60 seconds. If you leave this page, the challenge shows up in <strong>My challenges</strong> when it's ready."
+  },
+  "challengeCard": {
+    "generating": "Generating challenge…",
+    "badgeGenerating": "Generating",
+    "public": "Public",
+    "languageNote": "Written in {language}"
+  },
+  "languages": {
+    "en": "English",
+    "pt": "Portuguese",
+    "es": "Spanish"
+  },
+  "challenge": {
+    "back": "My challenges",
+    "generatingTitle": "Your challenge is being generated",
+    "generatingText": "This takes 20 to 60 seconds. This page updates by itself when it's ready.",
+    "tipReady": "Your challenge is ready!",
+    "tipRegenerate": "Didn't like the topic? You can regenerate it once, for free, and both versions stay saved.",
+    "closeTip": "Close notice",
+    "generatedOn": "Generated on {date}",
+    "versions": "Challenge versions",
+    "version": "Version {number}",
+    "current": "current",
+    "toc": {
+      "aria": "Challenge sections",
+      "title": "On this page"
+    },
+    "actions": {
+      "copyMarkdown": "Copy markdown",
+      "markdownCopied": "Markdown copied. Just paste it in your README!",
+      "download": "Download .md",
+      "regenerate": "Regenerate",
+      "more": "More actions",
+      "makePrivate": "Make private",
+      "makePublic": "Make public",
+      "copyLink": "Copy public link",
+      "delete": "Delete challenge",
+      "nowPrivate": "The challenge is now private.",
+      "nowPublic": "Challenge is public! The link was copied.",
+      "linkCopied": "Public link copied.",
+      "newVersion": "New version generated! The previous one stays saved.",
+      "regenerateTitle": "Regenerate this challenge?",
+      "regenerateText": "It's free, but you can only regenerate once. The AI creates a new challenge with the same stack and level, and the current version stays saved so you can compare.",
+      "cancel": "Cancel",
+      "deleteTitle": "Delete this challenge?",
+      "deleteText": "It disappears from your list and, if public, from the gallery. This can't be undone and the credit isn't refunded.",
+      "deleteConfirm": "Delete"
+    }
+  },
+  "document": {
+    "context": "Context",
+    "requirements": "Requirements",
+    "functional": "Functional requirements",
+    "nonFunctional": "Non-functional requirements",
+    "whatToUse": "What to use",
+    "deliverables": "Deliverables",
+    "deadline": "Time to complete",
+    "guide": "Implementation guide",
+    "evaluation": "What will be evaluated",
+    "structure": "Folder structure",
+    "copyStructure": "Copy structure",
+    "progress": "{done} of {total} done · check off what you've finished (saved in this browser only)"
+  },
+  "publicChallenge": {
+    "notFound": "Challenge not found",
+    "fallbackTitle": "Challenge",
+    "ogSuffix": "Technical challenge",
+    "ctaTitle": "Want a challenge like this, just for you?",
+    "ctaText": "Choose your stack and level. The first 2 are on us.",
+    "ctaButton": "Generate mine"
+  },
+  "explore": {
+    "title": "Explore challenges",
+    "description": "Technical challenges generated by the Complicode community, based on real industry problems.",
+    "heading": "Explore challenges",
+    "lead": "Challenges the community generated and chose to share. Open one to see the full briefing.",
+    "emptyTitle": "The gallery is still empty",
+    "emptyText": "Generate a challenge and make it public to be the first one to show up here.",
+    "emptyCta": "Generate my challenge"
+  },
+  "credits": {
+    "meta": "Credits",
+    "title": "Credits",
+    "lead": "Each challenge costs 1 credit. Regenerating is free.",
+    "balance": "Your balance",
+    "available": "{count, plural, one {credit available} other {credits available}}",
+    "verify": "Verify your email and phone and get 2 free",
+    "package": "Credit package",
+    "packageAmount": "{count} credits",
+    "perChallenge": "{price} per challenge",
+    "perk1": "10 complete challenges, in any stack and level",
+    "perk2": "Each one can be regenerated once, for free",
+    "perk3": "Credits never expire",
+    "payNote": "Payment through AbacatePay. We don't store your card details.",
+    "history": "Statement",
+    "historyEmpty": "No activity yet.",
+    "balanceAfter": "balance {balance}",
+    "payments": "Payments",
+    "paymentLine": "{credits} credits · {price}",
+    "continuePayment": "Continue payment",
+    "tx": {
+      "SIGNUP_BONUS": "Verification bonus",
+      "PURCHASE": "Credit purchase",
+      "CHALLENGE_GENERATION": "Challenge generated",
+      "REFUND": "Refund for a failed generation",
+      "PURCHASE_REFUND": "Purchase refund"
+    },
+    "status": {
+      "PENDING": "Pending",
+      "PAID": "Paid",
+      "CANCELLED": "Cancelled",
+      "REFUNDED": "Refunded"
+    },
+    "buy": "Pay with PIX or card",
+    "buying": "Opening the payment…"
+  },
+  "paymentReturn": {
+    "pendingTitle": "Confirming your payment…",
+    "pendingLateTitle": "We haven't received the confirmation yet",
+    "pendingText": "As soon as AbacatePay confirms it, the credits are added to your account. It can take a few seconds.",
+    "pendingLateText": "PIX payments usually arrive within seconds. If you paid, the credits show up here as soon as the confirmation arrives.",
+    "paidTitle": "Payment confirmed!",
+    "paidText": "Your credits are already in your account. Enjoy the challenges!",
+    "cancelledTitle": "Payment not completed",
+    "cancelledText": "Nothing was charged. You can try again whenever you want.",
+    "refundedTitle": "Payment refunded",
+    "refundedText": "The amount was returned and the credits from the purchase were removed."
+  },
+  "stacks": {
+    "backend": "Backend",
+    "frontend": "Frontend",
+    "fullstack": "Fullstack",
+    "mobile": "Mobile",
+    "data": "Data & AI"
+  },
+  "levels": {
+    "INTERN": {
+      "label": "Intern",
+      "deadline": "3 to 5 days",
+      "description": "Language and framework fundamentals, simple business rules and validation."
+    },
+    "JUNIOR": {
+      "label": "Junior",
+      "deadline": "1 to 2 weeks",
+      "description": "Authentication, persistence, error handling, one external integration and tests."
+    },
+    "MID": {
+      "label": "Mid-level",
+      "deadline": "2 to 3 weeks",
+      "description": "Resilient integrations, queues or async processing, caching and concurrency."
+    },
+    "SENIOR": {
+      "label": "Senior",
+      "deadline": "3 to 4 weeks",
+      "description": "Scale, availability, observability and architecture with documented trade-offs."
+    }
+  },
+  "auth": {
+    "loginMeta": "Sign in",
+    "signupMeta": "Create account",
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to generate and follow your challenges.",
+      "expired": "Your session expired. Sign in again to continue.",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "noAccount": "Don't have an account yet?",
+      "createFree": "Create a free account"
+    },
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "It takes less than a minute.",
+      "bonus": "Confirm your email and phone and get <strong>2 credits</strong> to generate your first challenges.",
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "ruleMet": "(met)",
+      "rulePending": "(pending)",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in"
+    }
+  },
+  "commandMenu": {
+    "search": "Search…",
+    "title": "Command menu",
+    "description": "Navigate and run actions",
+    "placeholder": "What do you want to do?",
+    "empty": "Nothing found.",
+    "goTo": "Go to",
+    "generateFrom": "Generate a challenge for",
+    "generateKeyword": "generate",
+    "theme": "Theme",
+    "themeLight": "Light theme",
+    "themeDark": "Dark theme",
+    "themeSystem": "System theme",
+    "account": "Account",
+    "logout": "Sign out"
+  },
+  "landing": {
+    "meta": "Complicode · Technical challenges based on real problems",
+    "hero": {
+      "line1": "Enough with to-do lists.",
+      "line2": "Practice with real problems.",
+      "lead": "Technical challenges in your stack and at your level, with company context, requirements, a deadline and what a senior reviewer would look for in your code.",
+      "cta": "Generate my first challenge",
+      "secondary": "See examples",
+      "fine": "2 free challenges when you confirm your email and phone · no card",
+      "scribble": "a company briefing, not a loose exercise"
+    },
+    "marquee": {
+      "aria": "Available frameworks"
+    },
+    "builder": {
+      "title": "Pick the stack and the level. <accent>The scope comes with it.</accent>",
+      "description": "Try it here: change the area and the level and see how the challenge changes. With an account, yours is generated on the spot and is only yours.",
+      "area": "Area",
+      "level": "Level",
+      "cta": "Generate my real one",
+      "requirements": "Functional requirements",
+      "note": "Illustrative example. Your challenge is generated on the spot and is unique.",
+      "samples": {
+        "backend": {
+          "industry": "Logistics",
+          "title": "Real-time delivery tracking",
+          "project": "RouteLive",
+          "context": "A carrier takes 1,200 calls a day from customers asking where their order is.",
+          "r1": "Delivery registration with status and history",
+          "r2": "ZIP code validation and pickup windows",
+          "r3": "Authentication for drivers and store owners",
+          "r4": "Webhook to the store when the status changes",
+          "r5": "Event queue with idempotent reprocessing",
+          "r6": "Partitioning by region and p99 latency metrics"
+        },
+        "frontend": {
+          "industry": "Education",
+          "title": "Digital attendance for public schools",
+          "project": "ClassCheck",
+          "context": "Teachers lose 10 minutes of every class calling the roll on paper and typing everything in at the end of the month.",
+          "r1": "Class list with search and filters",
+          "r2": "Attendance with validation and confirmation",
+          "r3": "Teacher login and protected routes",
+          "r4": "Offline mode that syncs on reconnect",
+          "r5": "Optimistic updates and query caching",
+          "r6": "Performance budget and audited accessibility"
+        },
+        "fullstack": {
+          "industry": "Healthcare",
+          "title": "Online booking for clinics",
+          "project": "ClinicBook",
+          "context": "A clinic with 14 professionals loses 1 in every 5 appointments because patients forget the time.",
+          "r1": "Schedule per professional with free slots",
+          "r2": "Notice and cancellation rules",
+          "r3": "Patient and front-desk accounts",
+          "r4": "Email reminder 24 hours before",
+          "r5": "Booking with a lock against double slots",
+          "r6": "Multiple clinics with isolated data and auditing"
+        },
+        "mobile": {
+          "industry": "Retail",
+          "title": "Loyalty for a bakery chain",
+          "project": "BreadPoints",
+          "context": "A chain with 9 stores still uses stamped paper cards and doesn't know who its loyal customers are.",
+          "r1": "Points card with a QR code",
+          "r2": "Rewards catalog with redemption rules",
+          "r3": "Social login and customer profile",
+          "r4": "Push notifications for promotions",
+          "r5": "Points that work offline and sync",
+          "r6": "Feature flags, gradual rollout and crash reporting"
+        },
+        "data": {
+          "industry": "Agribusiness",
+          "title": "Crop forecasting for cooperatives",
+          "project": "HarvestRight",
+          "context": "A cooperative plans its storage with spreadsheets from 6 harvests that nobody can compare.",
+          "r1": "Cleaning and standardizing the harvest spreadsheets",
+          "r2": "Exploratory analysis by region and crop",
+          "r3": "Reproducible pipeline with data tests",
+          "r4": "Integration with a weather API",
+          "r5": "Forecast model with temporal validation",
+          "r6": "Drift monitoring and scheduled retraining"
+        }
+      }
+    },
+    "anatomy": {
+      "title": "Everything a company briefing has.",
+      "description": "Eight sections, from the problem the company faces to what will be evaluated in your code.",
+      "context": {
+        "title": "Real context",
+        "text": "A company's pain, with numbers, characters and what's at stake. You know why the system exists before writing the first line."
+      },
+      "requirements": {
+        "title": "Requirements",
+        "text": "Functional and non-functional, with clear rules and limits. It becomes a checklist you tick off as you progress."
+      },
+      "whatToUse": {
+        "title": "What to use",
+        "text": "The technologies of each layer and what each one is for. No \"use whatever you want\"."
+      },
+      "deliverables": {
+        "title": "Deliverables",
+        "text": "What must be in the repository at the end: code, tests, documentation and how to run it."
+      },
+      "deadline": {
+        "title": "Deadline",
+        "text": "A completion time that fits the level, so you also practice estimating."
+      },
+      "guide": {
+        "title": "Implementation guide",
+        "text": "Modeling, integrations, security and tips, in the order that makes sense."
+      },
+      "evaluation": {
+        "title": "Evaluation criteria",
+        "text": "What a senior reviewer would look at in your code. You know the standard before you start."
+      },
+      "structure": {
+        "title": "Folder structure",
+        "text": "A suggested tree following the framework's conventions, ready to copy."
+      }
+    },
+    "ladder": {
+      "title": "From intern to senior, the bar rises with you.",
+      "description": "The level changes the scope, the deadline and what is expected from your solution."
+    },
+    "portfolio": {
+      "title": "From briefing to <accent>portfolio</accent>.",
+      "lead": "Export to markdown for your README, check off what you've done and send the link to anyone who wants to see it.",
+      "exported": "Exported from Complicode",
+      "readmeAria": "Example of a README generated from a challenge",
+      "readmeTitle": "# ReconcilePay",
+      "readmeMeta": "> Complicode challenge · Mid-level · FastAPI",
+      "readmeContext": "## Context",
+      "readmeCtx1": "A clinic network closes the month 3 days late",
+      "readmeCtx2": "because finance checks 4 thousand entries…",
+      "readmeRequirements": "## Requirements",
+      "readmeReq1": "- [x] OFX and CNAB 240 statement import",
+      "readmeReq2": "- [x] Matching by amount, date and document",
+      "readmeReq3": "- [ ] Discrepancy queue with approval",
+      "linkTitle": "Public link",
+      "linkText": "Anyone can open the briefing, no account needed.",
+      "linkCopy": "Copy",
+      "progressTitle": "Saved progress",
+      "progressText": "Check off each finished requirement and see how much is left.",
+      "progressCount": "5 of 8 requirements"
+    },
+    "productShot": {
+      "meta": "Financial services · Mid-level · FastAPI",
+      "title": "Automated bank reconciliation",
+      "project": "ReconcilePay",
+      "context": "A clinic network closes the month 3 days late because finance checks 4 thousand entries by hand. Your challenge is to automate that check.",
+      "req1": "OFX and CNAB 240 statement import",
+      "req2": "Automatic matching by amount, date and document",
+      "req3": "Configurable tolerance rules per bank",
+      "req4": "Discrepancy queue with manual approval",
+      "req5": "Exportable monthly closing report",
+      "progress": "Progress",
+      "progressCount": "3 of 8 requirements"
+    },
+    "community": {
+      "title": "Generated by the community.",
+      "description": "Challenges other devs generated and chose to share.",
+      "seeAll": "See all"
+    },
+    "pricing": {
+      "title": "Pay only for what you use.",
+      "description": "No subscription. One credit, one complete challenge.",
+      "freeName": "To get started",
+      "freePrice": "R$ 0",
+      "freeNote": "2 credits when you confirm email and phone",
+      "freePerk1": "2 complete challenges",
+      "freePerk2": "Free regeneration on each one",
+      "freePerk3": "Markdown export",
+      "freeCta": "Create a free account",
+      "paidName": "Credit package",
+      "paidPrice": "R$ 10",
+      "paidBadge": "R$ 1 per challenge",
+      "paidNote": "10 credits, one-time payment by PIX or card",
+      "paidPerk1": "10 challenges in any stack and level",
+      "paidPerk2": "Credits that never expire",
+      "paidPerk3": "Free regeneration on each challenge",
+      "paidCta": "Start now"
+    },
+    "faq": {
+      "title": "Frequently asked questions.",
+      "lead": "What everyone asks before generating their first challenge.",
+      "q1": "Do I need to pay to start?",
+      "a1": "No. When you confirm your email and phone you get 2 credits, enough to generate 2 complete challenges. After that, 10 credits cost R$ 10.00.",
+      "q2": "Why do you ask for my phone?",
+      "a2": "To ensure one account per person and keep the credits free. The verification is done through Telegram, with no SMS and no cost, and the number isn't used for anything else.",
+      "q3": "What if I don't like the challenge?",
+      "a3": "Each challenge can be regenerated once, for free. Both versions stay saved so you can choose.",
+      "q4": "Can I put it in my portfolio?",
+      "a4": "You can and should. Export the challenge to markdown for your repository's README and, if you want, make it public with a shareable link.",
+      "q5": "Are the challenges unique?",
+      "a5": "Yes. Each generation starts from a real industry scenario and avoids repeating the topics you've already received."
+    },
+    "finalCta": {
+      "title": "We complicate it. You learn.",
+      "text": "Create your account, confirm your email and phone and generate your first 2 challenges for free.",
+      "button": "Create a free account",
+      "scribble": "takes 2 minutes"
+    }
+  },
+  "onboarding": {
+    "meta": "Welcome",
+    "stepperAria": "Signup progress",
+    "stepDone": "(completed)",
+    "steps": {
+      "start": "Welcome",
+      "email": "Email",
+      "phone": "Phone",
+      "done": "Bonus"
+    },
+    "homeAria": "Complicode, home",
+    "laterPrompt": "Prefer to finish later?",
+    "laterLink": "Go to home",
+    "intro": {
+      "greeting": "Great to have you here, {name}!",
+      "lead": "In 2 minutes you'll have everything ready to generate your first challenge.",
+      "howTitle1": "Pick your stack",
+      "howText1": "Area, framework and level: from intern to senior.",
+      "howTitle2": "Get a real briefing",
+      "howText2": "A company's context, requirements, deadline, guide and evaluation criteria.",
+      "howTitle3": "Build and show it off",
+      "howText3": "Export to markdown for your README and publish it in your portfolio.",
+      "creditsTitle": "How credits work",
+      "credits1": "Each generated challenge costs <strong>1 credit</strong>. You get <strong>2 credits</strong> when you confirm your email and phone.",
+      "credits2": "Didn't like the challenge? You can <strong>regenerate once, for free</strong>.",
+      "telegramNote": "The phone is verified through Telegram, with no SMS and no cost. It ensures one account per person.",
+      "later": "Do it later",
+      "start": "Start verification"
+    },
+    "email": {
+      "title": "Confirm your email",
+      "sending": "Sending a 6-digit code to <strong>{email}</strong>. It's valid for 10 minutes.",
+      "sent": "We sent a 6-digit code to <strong>{email}</strong>. It's valid for 10 minutes.",
+      "codeLabel": "Verification code",
+      "newCodeToast": "We sent a new code.",
+      "confirmedToast": "Email confirmed!",
+      "notArrivedWait": "Didn't arrive? Check your spam folder or resend in <time>{seconds}s</time>.",
+      "notArrivedReady": "Didn't arrive? Check your spam folder or <resend>resend the code</resend>.",
+      "confirm": "Confirm"
+    },
+    "phone": {
+      "title": "Confirm your phone",
+      "lead": "It's done through Telegram: no SMS and no cost. The number comes from your Telegram account and is only used to ensure one account per person.",
+      "step1": "Open the Complicode bot on Telegram.",
+      "step2": "Tap Start.",
+      "step3": "Tap “📱 Share my phone number” and confirm.",
+      "open": "Open in Telegram",
+      "waiting": "<status>Waiting for confirmation on Telegram…</status> The link expires in <countdown>{time}</countdown>.",
+      "expired": "The link expired. Generate a new one to continue.",
+      "cooldown": "You generated a link a moment ago. A new one is available in {seconds}s.",
+      "generating": "Generating link…",
+      "generate": "Generate a new link",
+      "qrAlt": "QR code to open the Telegram bot on your phone",
+      "qrHint": "On a computer? Scan it with your phone's camera.",
+      "confirmedToast": "Phone confirmed!"
+    },
+    "done": {
+      "title": "All set!",
+      "lead": "Email and phone confirmed. Your welcome credits are already in your account.",
+      "available": "{count, plural, one {credit available} other {credits available}}",
+      "home": "Go to home",
+      "generate": "Generate my first challenge"
+    }
+  },
+  "errors": {
+    "generic": "Something went wrong on our side. Please try again in a moment.",
+    "noCredits": "You don't have enough credits.",
+    "tooManyRequests": "Too many attempts in a row. Wait a minute and try again.",
+    "unavailable": "The service is unavailable right now. Please try again in a moment."
+  },
+  "validation": {
+    "emailRequired": "Enter your email",
+    "emailTooLong": "Email is too long",
+    "emailInvalid": "Enter a valid email",
+    "passwordRequired": "Enter your password",
+    "passwordInvalid": "Invalid password",
+    "nameMin": "Use at least 3 characters",
+    "nameMax": "Use at most 100 characters",
+    "passwordWeak": "The password doesn't meet the requirements",
+    "codeDigits": "The code has 6 digits."
+  },
+  "password": {
+    "length": "Between 8 and 64 characters",
+    "upper": "One uppercase letter",
+    "lower": "One lowercase letter",
+    "number": "One number"
+  },
+  "actions": {
+    "auth": {
+      "wrongCredentials": "Incorrect email or password.",
+      "emailTaken": "This email is already registered. How about signing in?"
+    },
+    "payments": {
+      "unavailable": "Payments are unavailable right now. Please try again in a moment.",
+      "checkoutFailed": "We couldn't open the payment page. Please try again."
+    },
+    "verification": {
+      "codeExpired": "This code has expired. Request a new one.",
+      "tooManyAttempts": "Too many wrong attempts. Request a new code.",
+      "invalidCode": "Incorrect code. Check it and try again.",
+      "codeUsed": "This code has already been used.",
+      "cooldown": "We just sent a code. Wait a minute to request another."
+    },
+    "challenges": {
+      "pickSelection": "Choose the stack, the framework and the level.",
+      "noCredits": "You don't have enough credits to generate a challenge.",
+      "notAvailable": "This combination of stack and framework isn't available.",
+      "overloaded": "The AI is overloaded right now. Your credit was refunded; try again in a few minutes.",
+      "invalidChallenge": "Invalid challenge.",
+      "alreadyRegenerated": "This challenge has already been regenerated.",
+      "stillGenerating": "This challenge is still being generated.",
+      "overloadedRegenerate": "The AI is overloaded right now. Try regenerating again in a few minutes.",
+      "onlyReadyPublic": "Only ready challenges can be public.",
+      "notFound": "Challenge not found."
+    }
+  },
+  "metadata": {
+    "title": "Complicode · Real technical challenges",
+    "description": "Generate technical challenges that simulate real industry problems, in your stack and at your level."
+  },
+  "locale": {
+    "label": "Language"
+  },
+  "nav": {
+    "ariaMain": "Main",
+    "home": "Home",
+    "homeShort": "Home",
+    "generate": "Generate challenge",
+    "generateShort": "Generate",
+    "challenges": "My challenges",
+    "challengesShort": "Challenges",
+    "credits": "Credits",
+    "creditsShort": "Credits"
+  },
+  "appLayout": {
+    "homeAria": "Complicode, home",
+    "creditsTitle": "Your credits",
+    "creditsSr": "credits",
+    "verifyBanner": "Confirm your email and phone and get 2 free credits.",
+    "verifyLink": "Continue verification"
+  },
+  "authLayout": {
+    "homeAria": "Complicode, home page",
+    "previewTitle": "Technical challenges that feel like <highlight>real work</highlight>.",
+    "previewMeta": "Events · Junior · Spring Boot",
+    "previewName": "High-Demand Ticket Booking and Sales System",
+    "previewRequirements": "Functional requirements",
+    "previewReq1": "Temporary ticket hold for 10 minutes",
+    "previewReq2": "Concurrency control with optimistic locking",
+    "previewReq3": "Automatic release of expired holds",
+    "previewReq4": "Checkout with a simulated payment gateway",
+    "previewDeadline": "deadline",
+    "previewDeadlineValue": "1 to 2 weeks"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "We couldn't load this page right now. Please try again in a moment.",
+    "code": "code",
+    "home": "Go to home",
+    "retry": "Try again"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The address doesn't exist, or the challenge is private or was removed.",
+    "explore": "Explore challenges",
+    "home": "Go to home"
+  },
+  "publicHeader": {
+    "homeAria": "Complicode, home page",
+    "sections": "Sections",
+    "main": "Main",
+    "howItWorks": "How it works",
+    "examples": "Examples",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "explore": "Explore",
+    "openApp": "Open the app",
+    "login": "Sign in",
+    "signup": "Create account"
+  },
+  "footer": {
+    "tagline": "Technical challenges based on real problems, for devs who learn by building.",
+    "product": "Product",
+    "howItWorks": "How it works",
+    "explore": "Explore challenges",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "account": "Account",
+    "signup": "Create account",
+    "login": "Sign in"
+  },
+  "userMenu": {
+    "aria": "Account menu",
+    "logout": "Sign out"
+  },
+  "theme": {
+    "aria": "Change theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "pagination": {
+    "aria": "Pagination",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "copy": {
+    "label": "Copy",
+    "success": "Copied!",
+    "error": "Couldn't copy."
+  },
+  "passwordInput": {
+    "show": "Show password",
+    "hide": "Hide password"
+  }
+}

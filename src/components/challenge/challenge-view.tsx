@@ -1,10 +1,11 @@
 'use client';
 
 import { Clock, PartyPopper, X } from 'lucide-react';
+import { useFormatter, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { formatDate } from '@/lib/format';
-import { LEVELS } from '@/lib/levels';
+import type { DocumentLabels } from '@/i18n/document-labels';
+import { stackLabel } from '@/i18n/stack-label';
 import type { ChallengeDetail } from '@/lib/types/challenge';
 import { MAX_REGENERATIONS } from '@/lib/types/limits';
 import { ChallengeActions } from './challenge-actions';
@@ -16,11 +17,18 @@ import { TableOfContents } from './table-of-contents';
 /** The owner's view of a ready challenge: versions, actions and the document. */
 export function ChallengeView({
   challenge,
+  documentLabels,
   isNew,
 }: {
   challenge: ChallengeDetail;
+  /** Section titles, in the language the challenge is written in. */
+  documentLabels: DocumentLabels;
   isNew: boolean;
 }) {
+  const t = useTranslations('challenge');
+  const levels = useTranslations('levels');
+  const stacks = useTranslations('stacks');
+  const format = useFormatter();
   const versions = challenge.versions;
   const latest = versions.at(-1)?.version ?? 1;
   const [selected, setSelected] = useState(latest);
@@ -33,12 +41,15 @@ export function ChallengeView({
   if (!content) return null;
 
   const canRegenerate = challenge.regenerationsUsed < MAX_REGENERATIONS;
-  const selection = `${challenge.stack.name} · ${challenge.framework.name} · ${LEVELS[challenge.level].label}`;
+  const stackName = stackLabel(
+    stacks,
+    challenge.stack.slug,
+    challenge.stack.name,
+  );
+  const selection = `${stackName} · ${challenge.framework.name} · ${levels(`${challenge.level}.label`)}`;
 
   if (regenerating) {
-    return (
-      <GeneratingView title="Gerando a nova versão" selection={selection} />
-    );
+    return <GeneratingView newVersion selection={selection} />;
   }
 
   return (
@@ -51,14 +62,12 @@ export function ChallengeView({
               aria-hidden="true"
             />
             <p className="flex-1">
-              Seu desafio está pronto!{' '}
-              {canRegenerate &&
-                'Não curtiu o tema? Você pode regerar uma vez, de graça, e as duas versões ficam salvas.'}
+              {t('tipReady')} {canRegenerate && t('tipRegenerate')}
             </p>
             <button
               type="button"
               onClick={() => setShowTip(false)}
-              aria-label="Fechar aviso"
+              aria-label={t('closeTip')}
               className="rounded-md p-0.5 hover:bg-primary/10"
             >
               <X className="size-4" />
@@ -75,21 +84,30 @@ export function ChallengeView({
             )}
             <LevelBadge level={challenge.level} />
             <span className="text-muted-foreground">
-              {challenge.stack.name} · {challenge.framework.name}
+              {stackName} · {challenge.framework.name}
             </span>
             {challenge.public && <PublicBadge />}
           </div>
           <div className="space-y-2">
-            <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+            <h1
+              lang={challenge.locale}
+              className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl"
+            >
               {header.title}
             </h1>
             {header.projectName && header.projectName !== header.title && (
-              <p className="font-mono text-lg text-brand">
+              <p
+                lang={challenge.locale}
+                className="font-mono text-lg text-brand"
+              >
                 {header.projectName}
               </p>
             )}
             {header.summary && (
-              <p className="max-w-3xl text-pretty text-muted-foreground">
+              <p
+                lang={challenge.locale}
+                className="max-w-3xl text-pretty text-muted-foreground"
+              >
                 {header.summary}
               </p>
             )}
@@ -101,7 +119,11 @@ export function ChallengeView({
                 {content.deadline}
               </span>
             )}
-            <span>Gerado em {formatDate(challenge.createdAt)}</span>
+            <span>
+              {t('generatedOn', {
+                date: format.dateTime(new Date(challenge.createdAt), 'short'),
+              })}
+            </span>
           </div>
           <ChallengeActions
             id={challenge.id}
@@ -116,29 +138,32 @@ export function ChallengeView({
             value={String(selected)}
             onValueChange={(value) => setSelected(Number(value))}
           >
-            <TabsList aria-label="Versões do desafio">
+            <TabsList aria-label={t('versions')}>
               {versions.map((item) => (
                 <TabsTrigger key={item.version} value={String(item.version)}>
-                  Versão {item.version}
-                  {item.version === latest && ' · atual'}
+                  {t('version', { number: item.version })}
+                  {item.version === latest && ` · ${t('current')}`}
                 </TabsTrigger>
               ))}
             </TabsList>
           </Tabs>
         )}
 
-        <ChallengeDocument
-          key={selected}
-          content={content}
-          checklistKey={`cc:progress:${challenge.id}:v${selected}`}
-        />
+        <div lang={challenge.locale}>
+          <ChallengeDocument
+            key={selected}
+            content={content}
+            labels={documentLabels}
+            checklistKey={`cc:progress:${challenge.id}:v${selected}`}
+          />
+        </div>
       </article>
 
       <aside className="hidden lg:block">
         <div className="sticky top-24">
           <TableOfContents
             key={selected}
-            sections={documentSections(content)}
+            sections={documentSections(content, documentLabels)}
           />
         </div>
       </aside>

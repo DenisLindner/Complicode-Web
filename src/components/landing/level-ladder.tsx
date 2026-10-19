@@ -1,5 +1,6 @@
 import { Clock } from 'lucide-react';
-import { LEVEL_ORDER, LEVELS } from '@/lib/levels';
+import { useTranslations } from 'next-intl';
+import { LEVEL_ORDER } from '@/lib/levels';
 import { cn } from '@/lib/utils';
 
 // Each step is taller and warmer than the one before it. Muted text stays
@@ -13,6 +14,8 @@ const STEP_STYLES = [
 
 /** The four levels as a staircase: scope and deadline grow at each step. */
 export function LevelLadder() {
+  const t = useTranslations('levels');
+
   return (
     <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:items-end">
       {LEVEL_ORDER.map((level, index) => {
@@ -43,7 +46,7 @@ export function LevelLadder() {
               ))}
             </span>
             <h3 className="mt-auto pt-10 text-2xl font-bold tracking-tight">
-              {LEVELS[level].label}
+              {t(`${level}.label`)}
             </h3>
             <p
               className={cn(
@@ -52,7 +55,7 @@ export function LevelLadder() {
               )}
             >
               <Clock className="size-3.5" aria-hidden="true" />
-              {LEVELS[level].deadline}
+              {t(`${level}.deadline`)}
             </p>
             <p
               className={cn(
@@ -60,7 +63,7 @@ export function LevelLadder() {
                 last ? 'text-primary-foreground' : 'text-muted-foreground',
               )}
             >
-              {LEVELS[level].description}
+              {t(`${level}.description`)}
             </p>
           </li>
         );

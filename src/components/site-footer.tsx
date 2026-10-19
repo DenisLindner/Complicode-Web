@@ -1,42 +1,47 @@
-import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { Logo } from '@/components/logo';
+import { Link } from '@/i18n/navigation';
 
-const COLUMNS = [
-  {
-    title: 'Produto',
-    links: [
-      { href: '/#como-funciona', label: 'Como funciona' },
-      { href: '/explorar', label: 'Explorar desafios' },
-      { href: '/#precos', label: 'Preços' },
-      { href: '/#perguntas', label: 'Perguntas' },
-    ],
-  },
-  {
-    title: 'Conta',
-    links: [
-      { href: '/cadastro', label: 'Criar conta' },
-      { href: '/entrar', label: 'Entrar' },
-    ],
-  },
-] as const;
+export async function SiteFooter() {
+  const t = await getTranslations('footer');
 
-export function SiteFooter() {
+  const columns = [
+    {
+      title: t('product'),
+      links: [
+        {
+          href: { pathname: '/', hash: 'how-it-works' },
+          label: t('howItWorks'),
+        },
+        { href: '/explore', label: t('explore') },
+        { href: { pathname: '/', hash: 'pricing' }, label: t('pricing') },
+        { href: { pathname: '/', hash: 'faq' }, label: t('faq') },
+      ],
+    },
+    {
+      title: t('account'),
+      links: [
+        { href: '/signup', label: t('signup') },
+        { href: '/login', label: t('login') },
+      ],
+    },
+  ] as const;
+
   return (
     <footer className="overflow-hidden border-t">
       <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 pt-14 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)] sm:px-6">
         <div className="space-y-3">
           <Logo />
           <p className="max-w-xs text-sm text-muted-foreground">
-            Desafios técnicos baseados em problemas reais, para devs que
-            aprendem construindo.
+            {t('tagline')}
           </p>
         </div>
-        {COLUMNS.map(({ title, links }) => (
+        {columns.map(({ title, links }) => (
           <nav key={title} aria-label={title} className="space-y-3 text-sm">
             <p className="font-medium">{title}</p>
             <ul className="space-y-2">
               {links.map(({ href, label }) => (
-                <li key={href}>
+                <li key={label}>
                   <Link
                     href={href}
                     className="text-muted-foreground transition-colors hover:text-foreground"

@@ -1,4 +1,7 @@
 import type { NextConfig } from 'next';
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 /** Headers that do not depend on the request (the CSP is set in proxy.ts). */
 const securityHeaders = [
@@ -37,9 +40,9 @@ const nextConfig: NextConfig = {
     // The API sends the user back from the checkout to FRONTEND_URL/credits
     // (?payment=<id> is kept).
     return [
-      { source: '/credits', destination: '/app/creditos', permanent: false },
+      { source: '/credits', destination: '/app/credits', permanent: false },
     ];
   },
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

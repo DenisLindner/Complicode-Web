@@ -1,7 +1,23 @@
-import { render, screen } from '@testing-library/react';
+import { render as renderBare, screen } from '@testing-library/react';
+import { NextIntlClientProvider } from 'next-intl';
+import type { ReactElement, ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
+import messages from '../../../messages/pt.json';
 import type { ChallengeContent } from '@/lib/types/challenge';
 import { ChallengeDocument, documentSections } from './challenge-document';
+
+// The labels come in the language of the challenge (Portuguese here).
+const labels = messages.document;
+
+function Providers({ children }: { children: ReactNode }) {
+  return (
+    <NextIntlClientProvider locale="pt" messages={messages}>
+      {children}
+    </NextIntlClientProvider>
+  );
+}
+
+const render = (ui: ReactElement) => renderBare(ui, { wrapper: Providers });
 
 const content: ChallengeContent = {
   context: ['Primeiro parágrafo.', 'Segundo parágrafo.'],
@@ -26,18 +42,18 @@ const content: ChallengeContent = {
 
 describe('ChallengeDocument', () => {
   it('lists only the sections that have content', () => {
-    expect(documentSections(content).map(({ id }) => id)).toEqual([
-      'contexto',
-      'requisitos',
-      'o-que-usar',
-      'entregas',
-      'prazo',
-      'estrutura',
+    expect(documentSections(content, labels).map(({ id }) => id)).toEqual([
+      'context',
+      'requirements',
+      'what-to-use',
+      'deliverables',
+      'deadline',
+      'structure',
     ]);
   });
 
   it('renders the sections with numbered headings', () => {
-    render(<ChallengeDocument content={content} />);
+    render(<ChallengeDocument content={content} labels={labels} />);
 
     expect(
       screen.getByRole('heading', { level: 2, name: /Contexto/ }),
@@ -48,10 +64,14 @@ describe('ChallengeDocument', () => {
   });
 
   it('shows the checklist only when a storage key is given', () => {
-    const { rerender } = render(<ChallengeDocument content={content} />);
+    const { rerender } = render(
+      <ChallengeDocument content={content} labels={labels} />,
+    );
     expect(screen.queryByRole('checkbox')).toBeNull();
 
-    rerender(<ChallengeDocument content={content} checklistKey="k" />);
+    rerender(
+      <ChallengeDocument content={content} labels={labels} checklistKey="k" />,
+    );
     expect(
       screen.getByRole('checkbox', { name: 'Reserva' }),
     ).toBeInTheDocument();

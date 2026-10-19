@@ -7,43 +7,52 @@ import {
   type LucideIcon,
   Sparkles,
 } from 'lucide-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { Link, usePathname } from '@/i18n/navigation';
+import type { AppPathname } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 
+type NavPath = Extract<
+  AppPathname,
+  '/app' | '/app/generate' | '/app/challenges' | '/app/credits'
+>;
+
 interface NavItem {
-  href: string;
-  label: string;
+  href: NavPath;
+  /** Keys of the `nav` messages. */
+  label: 'home' | 'generate' | 'challenges' | 'credits';
   /** Label in the mobile tab bar. */
-  shortLabel: string;
+  shortLabel:
+    'homeShort' | 'generateShort' | 'challengesShort' | 'creditsShort';
   icon: LucideIcon;
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { href: '/app', label: 'Início', shortLabel: 'Início', icon: House },
+  { href: '/app', label: 'home', shortLabel: 'homeShort', icon: House },
   {
-    href: '/app/gerar',
-    label: 'Gerar desafio',
-    shortLabel: 'Gerar',
+    href: '/app/generate',
+    label: 'generate',
+    shortLabel: 'generateShort',
     icon: Sparkles,
   },
   {
-    href: '/app/desafios',
-    label: 'Meus desafios',
-    shortLabel: 'Desafios',
+    href: '/app/challenges',
+    label: 'challenges',
+    shortLabel: 'challengesShort',
     icon: FileText,
   },
   {
-    href: '/app/creditos',
-    label: 'Créditos',
-    shortLabel: 'Créditos',
+    href: '/app/credits',
+    label: 'credits',
+    shortLabel: 'creditsShort',
     icon: Coins,
   },
 ];
 
+/** `usePathname` answers with the canonical page name, whatever the language. */
 function useIsActive() {
   const pathname = usePathname();
-  return (href: string) =>
+  return (href: NavPath) =>
     href === '/app'
       ? pathname === '/app'
       : pathname === href || pathname.startsWith(`${href}/`);
@@ -51,10 +60,14 @@ function useIsActive() {
 
 /** Links in the header, from the md breakpoint up. */
 export function DesktopNav() {
+  const t = useTranslations('nav');
   const isActive = useIsActive();
 
   return (
-    <nav aria-label="Principal" className="hidden items-center gap-1 md:flex">
+    <nav
+      aria-label={t('ariaMain')}
+      className="hidden items-center gap-1 md:flex"
+    >
       {NAV_ITEMS.map(({ href, label }) => (
         <Link
           key={href}
@@ -65,7 +78,7 @@ export function DesktopNav() {
             isActive(href) && 'bg-muted font-medium text-foreground',
           )}
         >
-          {label}
+          {t(label)}
         </Link>
       ))}
     </nav>
@@ -74,11 +87,12 @@ export function DesktopNav() {
 
 /** Tab bar fixed at the bottom on phones. */
 export function MobileNav() {
+  const t = useTranslations('nav');
   const isActive = useIsActive();
 
   return (
     <nav
-      aria-label="Principal"
+      aria-label={t('ariaMain')}
       className="fixed inset-x-0 bottom-0 z-40 border-t bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
     >
       <ul className="grid grid-cols-4">
@@ -93,7 +107,7 @@ export function MobileNav() {
               )}
             >
               <Icon className="size-5" aria-hidden="true" />
-              {shortLabel}
+              {t(shortLabel)}
             </Link>
           </li>
         ))}

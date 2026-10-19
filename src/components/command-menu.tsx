@@ -1,7 +1,7 @@
 'use client';
 
 import { LogOut, Monitor, Moon, Search, Sparkles, Sun } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { logout } from '@/actions/auth';
@@ -18,6 +18,8 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from '@/components/ui/command';
+import { useRouter } from '@/i18n/navigation';
+import { stackLabel } from '@/i18n/stack-label';
 
 /** ⌘K / Ctrl+K: jump anywhere, start a challenge in a stack, switch theme. */
 export function CommandMenu({
@@ -25,6 +27,9 @@ export function CommandMenu({
 }: {
   stacks: { slug: string; name: string }[];
 }) {
+  const t = useTranslations('commandMenu');
+  const nav = useTranslations('nav');
+  const stackNames = useTranslations('stacks');
   const router = useRouter();
   const { setTheme } = useTheme();
   const [open, setOpen] = useState(false);
@@ -53,7 +58,7 @@ export function CommandMenu({
         className="hidden h-8 items-center gap-2 rounded-lg border bg-background px-2.5 text-sm text-muted-foreground transition-colors hover:text-foreground lg:inline-flex"
       >
         <Search className="size-3.5" aria-hidden="true" />
-        Buscar…
+        {t('search')}
         <kbd className="rounded border bg-muted px-1.5 font-mono text-[10px]">
           Ctrl K
         </kbd>
@@ -62,62 +67,70 @@ export function CommandMenu({
       <CommandDialog
         open={open}
         onOpenChange={setOpen}
-        title="Menu de comandos"
-        description="Navegue e execute ações"
+        title={t('title')}
+        description={t('description')}
       >
         <Command>
-          <CommandInput placeholder="O que você quer fazer?" />
+          <CommandInput placeholder={t('placeholder')} />
           <CommandList>
-            <CommandEmpty>Nada encontrado.</CommandEmpty>
-            <CommandGroup heading="Ir para">
+            <CommandEmpty>{t('empty')}</CommandEmpty>
+            <CommandGroup heading={t('goTo')}>
               {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
                 <CommandItem
                   key={href}
                   onSelect={() => run(() => router.push(href))}
                 >
                   <Icon />
-                  {label}
+                  {nav(label)}
                 </CommandItem>
               ))}
             </CommandGroup>
             <CommandSeparator />
-            <CommandGroup heading="Gerar desafio de">
-              {stacks.map((stack) => (
-                <CommandItem
-                  key={stack.slug}
-                  value={`gerar ${stack.name}`}
-                  onSelect={() =>
-                    run(() => router.push(`/app/gerar?stack=${stack.slug}`))
-                  }
-                >
-                  <StackIcon slug={stack.slug} />
-                  {stack.name}
-                  <CommandShortcut>
-                    <Sparkles className="size-3" />
-                  </CommandShortcut>
-                </CommandItem>
-              ))}
+            <CommandGroup heading={t('generateFrom')}>
+              {stacks.map((stack) => {
+                const name = stackLabel(stackNames, stack.slug, stack.name);
+                return (
+                  <CommandItem
+                    key={stack.slug}
+                    value={`${t('generateKeyword')} ${name}`}
+                    onSelect={() =>
+                      run(() =>
+                        router.push({
+                          pathname: '/app/generate',
+                          query: { stack: stack.slug },
+                        }),
+                      )
+                    }
+                  >
+                    <StackIcon slug={stack.slug} />
+                    {name}
+                    <CommandShortcut>
+                      <Sparkles className="size-3" />
+                    </CommandShortcut>
+                  </CommandItem>
+                );
+              })}
             </CommandGroup>
             <CommandSeparator />
-            <CommandGroup heading="Tema">
+            <CommandGroup heading={t('theme')}>
               <CommandItem onSelect={() => run(() => setTheme('light'))}>
                 <Sun />
-                Tema claro
+                {t('themeLight')}
               </CommandItem>
               <CommandItem onSelect={() => run(() => setTheme('dark'))}>
                 <Moon />
-                Tema escuro
+                {t('themeDark')}
               </CommandItem>
               <CommandItem onSelect={() => run(() => setTheme('system'))}>
                 <Monitor />
-                Tema do sistema
+                {t('themeSystem')}
               </CommandItem>
             </CommandGroup>
             <CommandSeparator />
-            <CommandGroup heading="Conta">
+            <CommandGroup heading={t('account')}>
               <CommandItem onSelect={() => run(() => void logout())}>
                 <LogOut />
-                Sair
+                {t('logout')}
               </CommandItem>
             </CommandGroup>
           </CommandList>

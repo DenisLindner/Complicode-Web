@@ -1,36 +1,36 @@
 import { Check, Clock, Coins } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { LogoMark } from '@/components/logo';
 import { delay } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
-const REQUIREMENTS = [
-  'Importação de extratos OFX e CNAB 240',
-  'Conciliação automática por valor, data e documento',
-  'Regras de tolerância configuráveis por banco',
-  'Fila de divergências com aprovação manual',
-  'Relatório de fechamento mensal exportável',
-];
 // The first three get checked, one after the other, once the shot is in.
 const CHECKED = 3;
 const FIRST_TICK_MS = 1400;
 const TICK_GAP_MS = 550;
 
-const SECTIONS = [
-  'Contexto',
-  'Requisitos',
-  'O que usar',
-  'Entregas',
-  'Prazo',
-  'Guia de implementação',
-  'O que será avaliado',
-  'Estrutura de pastas',
-];
+const REQUIREMENT_KEYS = ['req1', 'req2', 'req3', 'req4', 'req5'] as const;
+const SECTION_KEYS = [
+  'context',
+  'requirements',
+  'whatToUse',
+  'deliverables',
+  'deadline',
+  'guide',
+  'evaluation',
+  'structure',
+] as const;
 
 /**
  * The challenge page as the app shows it, built from markup instead of a
  * screenshot so it follows the theme. Decorative.
  */
 export function ProductShot({ className }: { className?: string }) {
+  const t = useTranslations('landing.productShot');
+  const nav = useTranslations('nav');
+  const doc = useTranslations('document');
+  const levels = useTranslations('levels');
+
   return (
     <div
       aria-hidden="true"
@@ -44,13 +44,13 @@ export function ProductShot({ className }: { className?: string }) {
           <LogoMark className="size-6" />
           <div className="hidden items-center gap-1 text-xs sm:flex">
             <span className="rounded-md px-2.5 py-1 text-muted-foreground">
-              Início
+              {nav('home')}
             </span>
             <span className="rounded-md px-2.5 py-1 text-muted-foreground">
-              Gerar desafio
+              {nav('generate')}
             </span>
             <span className="rounded-md bg-muted px-2.5 py-1 font-medium">
-              Meus desafios
+              {nav('challenges')}
             </span>
           </div>
         </div>
@@ -63,14 +63,15 @@ export function ProductShot({ className }: { className?: string }) {
         <div className="min-w-0 space-y-6">
           <div className="space-y-2">
             <p className="font-mono text-[11px] tracking-wide text-muted-foreground uppercase">
-              Serviços financeiros · Pleno · FastAPI
+              {t('meta')}
             </p>
             <p className="font-heading text-2xl leading-tight font-semibold tracking-tight sm:text-3xl">
-              Conciliação bancária automatizada
+              {t('title')}
             </p>
-            <p className="font-mono text-sm text-brand">ConciliaPay</p>
+            <p className="font-mono text-sm text-brand">{t('project')}</p>
             <p className="flex items-center gap-1.5 pt-1 text-xs text-muted-foreground">
-              <Clock className="size-3.5" />2 a 3 semanas
+              <Clock className="size-3.5" />
+              {levels('MID.deadline')}
             </p>
           </div>
 
@@ -79,12 +80,10 @@ export function ProductShot({ className }: { className?: string }) {
               <span className="font-mono text-xs font-normal text-brand">
                 01
               </span>
-              Contexto
+              {doc('context')}
             </p>
             <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">
-              Uma rede de clínicas fecha o mês com 3 dias de atraso porque o
-              financeiro confere 4 mil lançamentos à mão. Seu desafio é
-              automatizar essa conferência.
+              {t('context')}
             </p>
           </div>
 
@@ -93,14 +92,14 @@ export function ProductShot({ className }: { className?: string }) {
               <span className="font-mono text-xs font-normal text-brand">
                 02
               </span>
-              Requisitos funcionais
+              {doc('functional')}
             </p>
             <ul className="space-y-2.5 text-sm">
-              {REQUIREMENTS.map((text, index) => {
+              {REQUIREMENT_KEYS.map((key, index) => {
                 const checked = index < CHECKED;
                 const tick = delay(FIRST_TICK_MS + index * TICK_GAP_MS);
                 return (
-                  <li key={text} className="flex items-start gap-2.5">
+                  <li key={key} className="flex items-start gap-2.5">
                     <span
                       style={tick}
                       className={cn(
@@ -117,7 +116,7 @@ export function ProductShot({ className }: { className?: string }) {
                         />
                       )}
                     </span>
-                    <span>{text}</span>
+                    <span>{t(key)}</span>
                   </li>
                 );
               })}
@@ -127,7 +126,7 @@ export function ProductShot({ className }: { className?: string }) {
 
         <div className="hidden space-y-4 lg:block">
           <div className="space-y-1.5">
-            <p className="text-xs font-medium">Progresso</p>
+            <p className="text-xs font-medium">{t('progress')}</p>
             <div className="h-1.5 overflow-hidden rounded-full bg-muted">
               <div
                 style={delay(FIRST_TICK_MS)}
@@ -135,13 +134,13 @@ export function ProductShot({ className }: { className?: string }) {
               />
             </div>
             <p className="font-mono text-[11px] text-muted-foreground">
-              3 de 8 requisitos
+              {t('progressCount')}
             </p>
           </div>
           <ul className="space-y-1 border-l text-xs">
-            {SECTIONS.map((title, index) => (
+            {SECTION_KEYS.map((key, index) => (
               <li
-                key={title}
+                key={key}
                 className={cn(
                   '-ml-px border-l py-1 pl-3',
                   index === 1
@@ -149,7 +148,7 @@ export function ProductShot({ className }: { className?: string }) {
                     : 'border-transparent text-muted-foreground',
                 )}
               >
-                {title}
+                {doc(key)}
               </li>
             ))}
           </ul>

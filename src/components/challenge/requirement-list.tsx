@@ -22,9 +22,12 @@ function parseProgress(raw: string | null): number[] {
 export function RequirementList({
   requirements,
   storageKey,
+  progressLabel,
 }: {
   requirements: ChallengeRequirement[];
   storageKey?: string;
+  /** Template with {done} and {total}, in the language of the challenge. */
+  progressLabel: string;
 }) {
   const [raw, setRaw] = useLocalStorage(storageKey ?? 'cc:progress:none');
   const done = storageKey ? parseProgress(raw) : [];
@@ -40,8 +43,9 @@ export function RequirementList({
     <div className="space-y-3">
       {storageKey && (
         <p className="text-xs text-muted-foreground">
-          {done.length} de {requirements.length} concluídos · marque o que já
-          fez (fica salvo neste navegador)
+          {progressLabel
+            .replace('{done}', String(done.length))
+            .replace('{total}', String(requirements.length))}
         </p>
       )}
       <ol className="space-y-3">

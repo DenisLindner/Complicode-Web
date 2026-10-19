@@ -1,5 +1,6 @@
 'use server';
 
+import { getTranslations } from 'next-intl/server';
 import QRCode from 'qrcode';
 import { z } from 'zod';
 import { apiFailure, type ActionResult } from '@/lib/server/action-result';
@@ -7,14 +8,15 @@ import { api } from '@/lib/server/api';
 import { isApiError } from '@/lib/server/api-error';
 
 /** API messages (400) translated for the user. */
-const EMAIL_ERRORS: Record<string, string> = {
-  'Verification code expired or not found':
-    'Este código expirou. Peça um novo código.',
-  'Too many attempts, request a new code':
-    'Muitas tentativas erradas. Peça um novo código.',
-  'Invalid verification code': 'Código incorreto. Confira e tente de novo.',
-  'Verification code already used': 'Este código já foi usado.',
-};
+async function emailErrors(): Promise<Record<string, string>> {
+  const t = await getTranslations('actions.verification');
+  return {
+    'Verification code expired or not found': t('codeExpired'),
+    'Too many attempts, request a new code': t('tooManyAttempts'),
+    'Invalid verification code': t('invalidCode'),
+    'Verification code already used': t('codeUsed'),
+  };
+}
 
 function translate(error: unknown, table: Record<string, string>) {
   if (isApiError(error, 400)) {
@@ -39,23 +41,21 @@ export async function sendEmailCode(): Promise<
     }
     if (isApiError(error, 429)) {
       // A code was sent less than a minute ago and is still valid.
-      return {
-        ok: false,
-        cooldown: true,
-        error:
-          'Já enviamos um código há pouco. Aguarde um minuto para pedir outro.',
-      };
+      const t = await getTranslations('actions.verification');
+      return { ok: false, cooldown: true, error: t('cooldown') };
     }
-    return apiFailure(error);
+    return await apiFailure(error);
   }
 }
-
-const codeSchema = z.string().regex(/^\d{6}$/, 'O código tem 6 dígitos.');
 
 export async function confirmEmailCode(
   code: string,
 ): Promise<ActionResult & { bonusGranted?: boolean }> {
-  const parsed = codeSchema.safeParse(code);
+  const validation = await getTranslations('validation');
+  const parsed = z
+    .string()
+    .regex(/^\d{6}$/, validation('codeDigits'))
+    .safeParse(code);
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0].message };
   }
@@ -67,7 +67,7 @@ export async function confirmEmailCode(
     );
     return { ok: true, bonusGranted: result.bonusGranted };
   } catch (error) {
-    return translate(error, EMAIL_ERRORS) ?? apiFailure(error);
+    return translate(error, await emailErrors()) ?? (await apiFailure(error));
   }
 }
 
@@ -105,6 +105,6 @@ export async function startPhoneVerification(): Promise<PhoneVerificationStart> 
     if (isApiError(error, 429)) {
       return { ok: false, cooldown: true };
     }
-    return apiFailure(error);
+    return await apiFailure(error);
   }
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { LogOut } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { logout } from '@/actions/auth';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -19,6 +20,8 @@ function initials(name: string) {
 }
 
 export function UserMenu({ name, email }: { name: string; email: string }) {
+  const t = useTranslations('userMenu');
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -26,7 +29,7 @@ export function UserMenu({ name, email }: { name: string; email: string }) {
           variant="ghost"
           size="icon"
           className="rounded-full"
-          aria-label="Menu da conta"
+          aria-label={t('aria')}
         >
           <Avatar className="size-8">
             <AvatarFallback className="bg-accent text-xs font-semibold text-accent-foreground">
@@ -45,7 +48,7 @@ export function UserMenu({ name, email }: { name: string; email: string }) {
           <DropdownMenuItem asChild>
             <button type="submit" className="w-full">
               <LogOut />
-              Sair
+              {t('logout')}
             </button>
           </DropdownMenuItem>
         </form>
