@@ -1,4 +1,4 @@
-import { CircleAlert, Globe, Loader2 } from 'lucide-react';
+import { Globe, Loader2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { LEVELS } from '@/lib/levels';
 import type { ChallengeLevel, ChallengeStatus } from '@/lib/types/challenge';
@@ -17,14 +17,6 @@ export function StatusBadge({ status }: { status: ChallengeStatus }) {
       <Badge variant="outline" className="gap-1 text-brand">
         <Loader2 className="animate-spin" aria-hidden="true" />
         Gerando
-      </Badge>
-    );
-  }
-  if (status === 'FAILED') {
-    return (
-      <Badge variant="outline" className="gap-1 text-destructive">
-        <CircleAlert aria-hidden="true" />
-        Falhou
       </Badge>
     );
   }
