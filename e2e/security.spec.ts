@@ -54,7 +54,7 @@ test('BFF routes refuse cross-site requests', async ({ page, context }) => {
     .map(({ name, value }) => `${name}=${value}`)
     .join('; ');
 
-  const crossSite = await fetch('http://localhost:3001/bff/verificacao', {
+  const crossSite = await fetch('http://localhost:3001/bff/verification', {
     headers: {
       cookie,
       'sec-fetch-site': 'cross-site',
@@ -63,7 +63,7 @@ test('BFF routes refuse cross-site requests', async ({ page, context }) => {
   });
   expect(crossSite.status).toBe(403);
 
-  const sameOrigin = await fetch('http://localhost:3001/bff/verificacao', {
+  const sameOrigin = await fetch('http://localhost:3001/bff/verification', {
     headers: { cookie, 'sec-fetch-site': 'same-origin' },
   });
   expect(sameOrigin.status).toBe(200);
@@ -88,8 +88,8 @@ test('a tampered session is rejected and cleared', async ({ browser }) => {
   );
   const page = await context.newPage();
 
-  await page.goto('/app');
-  await expect(page).toHaveURL(/\/entrar\?next=%2Fapp$/);
+  await page.goto('/pt/app');
+  await expect(page).toHaveURL(/\/pt\/entrar\?next=%2Fpt%2Fapp$/);
   expect(await context.cookies()).toEqual([]);
   await context.close();
 });

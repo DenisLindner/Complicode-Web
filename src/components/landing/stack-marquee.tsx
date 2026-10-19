@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import {
   siAngular,
   siDjango,
@@ -63,9 +64,11 @@ function Row({ hidden = false }: { hidden?: boolean }) {
 
 /** Endless strip of the supported frameworks; pauses on hover. */
 export function StackMarquee() {
+  const t = useTranslations('landing.marquee');
+
   return (
     <section
-      aria-label="Frameworks disponíveis"
+      aria-label={t('aria')}
       className="group overflow-hidden [mask-image:linear-gradient(to_right,transparent,#000_12%,#000_88%,transparent)] py-10"
     >
       <div className="flex w-max marquee group-hover:[animation-play-state:paused]">

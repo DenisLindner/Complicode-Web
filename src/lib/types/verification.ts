@@ -1,4 +1,4 @@
-/** Verification status returned by /bff/verificacao. */
+/** Verification status returned by /bff/verification. */
 export interface VerificationStatus {
   emailVerified: boolean;
   phoneVerified: boolean;

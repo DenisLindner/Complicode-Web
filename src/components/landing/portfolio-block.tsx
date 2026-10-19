@@ -1,45 +1,30 @@
 import { Copy, FileDown, Link2, ListChecks } from 'lucide-react';
-
-const README = [
-  {
-    text: '# ConciliaPay',
-    className: 'text-espresso-foreground font-semibold',
-  },
-  {
-    text: '> Desafio Complicode · Pleno · FastAPI',
-    className: 'text-espresso-muted',
-  },
-  { text: '', className: '' },
-  { text: '## Contexto', className: 'text-primary' },
-  {
-    text: 'Uma rede de clínicas fecha o mês com 3 dias',
-    className: 'text-espresso-muted',
-  },
-  {
-    text: 'de atraso porque o financeiro confere 4 mil…',
-    className: 'text-espresso-muted',
-  },
-  { text: '', className: '' },
-  { text: '## Requisitos', className: 'text-primary' },
-  {
-    text: '- [x] Importação de extratos OFX e CNAB 240',
-    className: 'text-espresso-foreground',
-  },
-  {
-    text: '- [x] Conciliação por valor, data e documento',
-    className: 'text-espresso-foreground',
-  },
-  {
-    text: '- [ ] Fila de divergências com aprovação',
-    className: 'text-espresso-muted',
-  },
-];
+import { useTranslations } from 'next-intl';
 
 const CARD =
   'reveal rounded-[1.5rem] bg-card p-6 text-card-foreground shadow-[0_24px_48px_-24px_rgb(0_0_0/0.6)] ring-1 ring-white/10';
 
 /** Dark block: what happens after the briefing (export, share, track). */
 export function PortfolioBlock() {
+  const t = useTranslations('landing.portfolio');
+
+  const readme = [
+    {
+      text: t('readmeTitle'),
+      className: 'text-espresso-foreground font-semibold',
+    },
+    { text: t('readmeMeta'), className: 'text-espresso-muted' },
+    { text: '', className: '' },
+    { text: t('readmeContext'), className: 'text-primary' },
+    { text: t('readmeCtx1'), className: 'text-espresso-muted' },
+    { text: t('readmeCtx2'), className: 'text-espresso-muted' },
+    { text: '', className: '' },
+    { text: t('readmeRequirements'), className: 'text-primary' },
+    { text: t('readmeReq1'), className: 'text-espresso-foreground' },
+    { text: t('readmeReq2'), className: 'text-espresso-foreground' },
+    { text: t('readmeReq3'), className: 'text-espresso-muted' },
+  ];
+
   return (
     <section className="px-2 sm:px-4">
       <div className="relative isolate overflow-hidden rounded-[2rem] bg-espresso px-5 py-20 text-espresso-foreground sm:px-10 lg:py-28">
@@ -47,11 +32,14 @@ export function PortfolioBlock() {
         <div className="mx-auto max-w-6xl">
           <div className="max-w-2xl">
             <h2 className="text-4xl font-bold tracking-[-0.025em] text-balance sm:text-5xl">
-              Do briefing ao <span className="text-primary">portfólio</span>.
+              {t.rich('title', {
+                accent: (chunks) => (
+                  <span className="text-primary">{chunks}</span>
+                ),
+              })}
             </h2>
             <p className="mt-4 text-lg text-pretty text-espresso-muted">
-              Exporte em markdown para o README, marque o que já fez e mande o
-              link para quem quiser ver.
+              {t('lead')}
             </p>
           </div>
 
@@ -68,14 +56,14 @@ export function PortfolioBlock() {
                 </span>
                 <span className="ml-auto inline-flex items-center gap-1.5 rounded-full bg-primary/15 px-2.5 py-1 text-xs font-medium text-primary">
                   <FileDown className="size-3.5" aria-hidden="true" />
-                  Exportado do Complicode
+                  {t('exported')}
                 </span>
               </div>
               <pre
-                aria-label="Exemplo de README gerado a partir de um desafio"
+                aria-label={t('readmeAria')}
                 className="overflow-x-auto p-6 font-mono text-[13px] leading-relaxed"
               >
-                {README.map(({ text, className }, index) => (
+                {readme.map(({ text, className }, index) => (
                   <span key={index} className={`block ${className}`}>
                     {text || ' '}
                   </span>
@@ -88,20 +76,20 @@ export function PortfolioBlock() {
                 <span className="flex size-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
                   <Link2 className="size-5" aria-hidden="true" />
                 </span>
-                <h3 className="mt-4 text-xl font-semibold">Link público</h3>
+                <h3 className="mt-4 text-xl font-semibold">{t('linkTitle')}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Qualquer pessoa abre o briefing, sem precisar de conta.
+                  {t('linkText')}
                 </p>
                 <div
                   aria-hidden="true"
                   className="mt-5 flex items-center justify-between gap-3 rounded-full border bg-muted py-1.5 pr-1.5 pl-4 font-mono text-xs"
                 >
                   <span className="truncate text-muted-foreground">
-                    …/d/8f3k2a
+                    …/c/8f3k2a
                   </span>
                   <span className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 font-sans font-medium text-primary-foreground">
                     <Copy className="size-3" />
-                    Copiar
+                    {t('linkCopy')}
                   </span>
                 </div>
               </div>
@@ -110,16 +98,18 @@ export function PortfolioBlock() {
                 <span className="flex size-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
                   <ListChecks className="size-5" aria-hidden="true" />
                 </span>
-                <h3 className="mt-4 text-xl font-semibold">Progresso salvo</h3>
+                <h3 className="mt-4 text-xl font-semibold">
+                  {t('progressTitle')}
+                </h3>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Marque cada requisito pronto e veja quanto falta.
+                  {t('progressText')}
                 </p>
                 <div aria-hidden="true" className="mt-5">
                   <div className="h-2 overflow-hidden rounded-full bg-muted">
                     <div className="h-full w-[62%] reveal-grow rounded-full bg-primary" />
                   </div>
                   <p className="mt-2 font-mono text-xs text-muted-foreground">
-                    5 de 8 requisitos
+                    {t('progressCount')}
                   </p>
                 </div>
               </div>

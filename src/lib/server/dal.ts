@@ -1,6 +1,8 @@
 import 'server-only';
 import { redirect } from 'next/navigation';
 import { cache } from 'react';
+import { getLocale } from 'next-intl/server';
+import type { Locale } from '@/i18n/routing';
 import { api } from './api';
 import { isApiError } from './api-error';
 
@@ -15,6 +17,7 @@ interface ApiUser {
   emailVerified: boolean;
   phoneVerified: boolean;
   credits: number;
+  locale: Locale;
 }
 
 /** The fields the interface needs, safe to pass to Client Components. */
@@ -60,7 +63,7 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
 export async function requireUser() {
   const user = await getCurrentUser();
   if (!user) {
-    redirect('/sessao-expirada');
+    redirect(`/session-expired?locale=${await getLocale()}`);
   }
   return user;
 }

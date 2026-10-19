@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { loginSchema, registerSchema } from './auth';
+import { createAuthSchemas } from './auth';
+
+// The keys stand in for the translated messages.
+const { loginSchema, registerSchema } = createAuthSchemas((key) => key);
 
 describe('auth validation', () => {
   it('normalizes the email', () => {
@@ -35,5 +38,17 @@ describe('auth validation', () => {
         password,
       }).success,
     ).toBe(false);
+  });
+
+  it('reports the translated message of the field', () => {
+    const result = registerSchema.safeParse({
+      name: 'Al',
+      email: '',
+      password: 'x',
+    });
+
+    expect(result.error?.issues.map((issue) => issue.message)).toEqual(
+      expect.arrayContaining(['nameMin', 'emailRequired', 'passwordWeak']),
+    );
   });
 });

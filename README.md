@@ -2,32 +2,50 @@
 
 Frontend do **Complicode**, o gerador de desafios técnicos que simulam problemas reais da indústria. Feito com Next.js 16 (App Router), React 19, Tailwind CSS 4 e shadcn/ui.
 
+## Idiomas
+
+O site existe em **inglês** (idioma base), **português** e **espanhol**, com [`next-intl`](https://next-intl.dev).
+
+- **URLs:** o inglês não tem prefixo (`/login`); os outros têm (`/pt/entrar`, `/es/ingresar`). Os nomes das páginas também são traduzidos, e a tabela fica em `src/i18n/routing.ts`.
+- **Primeira visita:** o idioma vem do cookie `NEXT_LOCALE` (guardado ao trocar de idioma) e, sem ele, do `Accept-Language` do navegador. O seletor de idioma fica no cabeçalho.
+- **Mensagens:** `messages/en.json`, `pt.json` e `es.json`. O `en.json` é a referência: as chaves são tipadas (`t('chave.que.nao.existe')` falha no `tsc`) e o teste `src/i18n/messages.test.ts` exige as mesmas chaves e os mesmos placeholders nos três arquivos.
+- **Desafios:** cada desafio é gerado no idioma da interface no momento e guarda esse idioma (`locale`). Regerar mantém o idioma original, e os títulos das seções do documento seguem o idioma do desafio, não o da interface.
+- **E-mails e bot do Telegram:** seguem o idioma do usuário, que o site envia para a API ao cadastrar, ao entrar e ao trocar de idioma (`PATCH /users/me/locale`).
+- **Pagamentos:** continuam em reais, pela AbacatePay (PIX ou cartão), em qualquer idioma.
+
+Para adicionar um idioma: inclua o código em `locales` e as rotas em `pathnames` (`src/i18n/routing.ts`), crie `messages/<codigo>.json`, o rótulo em `src/components/locale-switcher.tsx` e o `Locale` na API (`prisma/schema.prisma`, `src/i18n`).
+
 ## Páginas
 
-| Rota                   | O que tem                                                                                                               |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `/`                    | Landing: hero com o produto, simulador de desafio por área e nível, anatomia do briefing, níveis, galeria, preços e FAQ |
-| `/explorar`            | Galeria de desafios públicos                                                                                            |
-| `/d/:id`               | Desafio público, com link compartilhável e cópia em markdown                                                            |
-| `/cadastro`, `/entrar` | Cadastro e login (validação nos dois lados, regras de senha ao vivo)                                                    |
-| `/boas-vindas`         | Onboarding: boas-vindas, código por email, telefone pelo Telegram (botão, QR code e acompanhamento automático) e bônus  |
-| `/app`                 | Início: créditos, verificação e desafios recentes                                                                       |
-| `/app/gerar`           | Assistente: área, framework e nível, com custo e tela de progresso                                                      |
-| `/app/desafios`        | Meus desafios (paginado)                                                                                                |
-| `/app/desafios/:id`    | Briefing completo, sumário, versões, checklist de requisitos, markdown, regerar, público/privado e excluir              |
-| `/app/creditos`        | Saldo, pacote de 10 créditos (AbacatePay), extrato e pagamentos                                                         |
+Os nomes abaixo são os canônicos (em inglês); em `pt` e `es` o endereço é traduzido (por exemplo, `/login` vira `/pt/entrar`).
+
+| Rota                  | O que tem                                                                                                               |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `/`                   | Landing: hero com o produto, simulador de desafio por área e nível, anatomia do briefing, níveis, galeria, preços e FAQ |
+| `/explore`            | Galeria de desafios públicos                                                                                            |
+| `/c/:id`              | Desafio público, com link compartilhável e cópia em markdown                                                            |
+| `/signup`, `/login`   | Cadastro e login (validação nos dois lados, regras de senha ao vivo)                                                    |
+| `/welcome`            | Onboarding: boas-vindas, código por email, telefone pelo Telegram (botão, QR code e acompanhamento automático) e bônus  |
+| `/app`                | Início: créditos, verificação e desafios recentes                                                                       |
+| `/app/generate`       | Assistente: área, framework e nível, com custo e tela de progresso                                                      |
+| `/app/challenges`     | Meus desafios (paginado)                                                                                                |
+| `/app/challenges/:id` | Briefing completo, sumário, versões, checklist de requisitos, markdown, regerar, público/privado e excluir              |
+| `/app/credits`        | Saldo, pacote de 10 créditos (AbacatePay), extrato e pagamentos                                                         |
 
 Atalho `Ctrl/⌘ + K` no app: navegação, gerar desafio por área, tema e sair.
 
 ### Rotas de servidor
 
-| Rota                                         | Uso                                                           |
-| -------------------------------------------- | ------------------------------------------------------------- |
-| `/bff/verificacao`                           | Status da verificação (polling do onboarding)                 |
-| `/bff/pagamentos/:id`                        | Status de um pagamento (volta do checkout)                    |
-| `/bff/desafios/:id/markdown`                 | Desafio em markdown (`?download=1` baixa o arquivo)           |
-| `/webhooks/abacatepay`, `/webhooks/telegram` | Repasse dos webhooks para a API (corpo e assinatura intactos) |
-| `/sessao-expirada`                           | Limpa uma sessão que a API recusou e volta ao login           |
+Não têm prefixo de idioma nem tradução.
+
+| Rota                                         | Uso                                                                               |
+| -------------------------------------------- | --------------------------------------------------------------------------------- |
+| `/bff/verification`                          | Status da verificação (polling do onboarding)                                     |
+| `/bff/payments/:id`                          | Status de um pagamento (volta do checkout)                                        |
+| `/bff/challenges/:id/markdown`               | Desafio em markdown (`?download=1` baixa o arquivo)                               |
+| `/webhooks/abacatepay`, `/webhooks/telegram` | Repasse dos webhooks para a API (corpo e assinatura intactos)                     |
+| `/session-expired`                           | Limpa uma sessão que a API recusou e volta ao login (`?locale=` escolhe o idioma) |
+| `/credits`                                   | Para onde a API devolve o usuário do checkout; redireciona para `/app/credits`    |
 
 As rotas `/bff` só respondem a requisições do próprio site (`Sec-Fetch-Site` e `Origin`). Configure nos provedores os webhooks `https://<app>/webhooks/abacatepay` e `https://<app>/webhooks/telegram`.
 
@@ -81,7 +99,7 @@ O `INTERNAL_API_KEY` precisa ser o mesmo configurado na API. Na API, `FRONTEND_U
 
 Rodam contra a stack real: suba a API (com `docker compose up -d` no repositório dela) e rode `npx playwright install chromium` uma vez. O Playwright faz o build e sobe o front se ele não estiver no ar.
 
-Cobrem login e cadastro, cookies da sessão (httpOnly, cifrados, invisíveis ao JavaScript), headers e CSP com nonce, redirecionamentos externos bloqueados, rotas `/bff` recusando outros sites, sessão adulterada, renovação do token com requisições paralelas, onboarding com o código lido do Mailpit e layout no celular. A geração de desafios fica de fora, porque gasta cota do Gemini e leva até um minuto.
+Cobrem login e cadastro, cookies da sessão (httpOnly, cifrados, invisíveis ao JavaScript), headers e CSP com nonce, redirecionamentos externos bloqueados, rotas `/bff` recusando outros sites, sessão adulterada, renovação do token com requisições paralelas, onboarding com o código lido do Mailpit, layout no celular e os três idiomas (URLs, troca de idioma, mensagens de erro e o idioma do e-mail de verificação, que vem da API). A geração de desafios fica de fora, porque gasta cota do Gemini e leva até um minuto.
 
 Cada teste simula um visitante com IP diferente (`X-Forwarded-For`) para não esbarrar no rate limit de login da API. Isso só funciona localmente, sem proxy na frente do Next.js.
 

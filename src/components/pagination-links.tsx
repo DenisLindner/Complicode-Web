@@ -1,8 +1,10 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 import { Button } from '@/components/ui/button';
+import { Link } from '@/i18n/navigation';
+import type { AppPathname } from '@/i18n/routing';
 
-export function PaginationLinks({
+export async function PaginationLinks({
   page,
   total,
   limit,
@@ -11,30 +13,38 @@ export function PaginationLinks({
   page: number;
   total: number;
   limit: number;
-  basePath: string;
+  /** Page the links point to (the canonical name, translated by language). */
+  basePath: Extract<
+    AppPathname,
+    '/explore' | '/app/challenges' | '/app/credits'
+  >;
 }) {
   const pages = Math.max(1, Math.ceil(total / limit));
   if (pages === 1) {
     return null;
   }
 
-  const href = (target: number) => `${basePath}?page=${target}`;
+  const t = await getTranslations('pagination');
+  const href = (target: number) => ({
+    pathname: basePath,
+    query: { page: target },
+  });
 
   return (
     <nav
-      aria-label="Paginação"
+      aria-label={t('aria')}
       className="flex items-center justify-between gap-4 pt-2"
     >
       <Button variant="outline" asChild>
         {page > 1 ? (
           <Link href={href(page - 1)}>
             <ChevronLeft />
-            Anterior
+            {t('previous')}
           </Link>
         ) : (
           <span aria-disabled="true" className="pointer-events-none opacity-50">
             <ChevronLeft />
-            Anterior
+            {t('previous')}
           </span>
         )}
       </Button>
@@ -44,12 +54,12 @@ export function PaginationLinks({
       <Button variant="outline" asChild>
         {page < pages ? (
           <Link href={href(page + 1)}>
-            Próxima
+            {t('next')}
             <ChevronRight />
           </Link>
         ) : (
           <span aria-disabled="true" className="pointer-events-none opacity-50">
-            Próxima
+            {t('next')}
             <ChevronRight />
           </span>
         )}

@@ -1,0 +1,91 @@
+import { hasLocale, NextIntlClientProvider } from 'next-intl';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import type { Metadata, Viewport } from 'next';
+import {
+  Bricolage_Grotesque,
+  Caveat,
+  Geist_Mono,
+  Hanken_Grotesk,
+} from 'next/font/google';
+import { headers } from 'next/headers';
+import { notFound } from 'next/navigation';
+import { ThemeProvider } from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/sonner';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { routing } from '@/i18n/routing';
+import '../globals.css';
+
+const display = Bricolage_Grotesque({
+  variable: '--font-display',
+  subsets: ['latin'],
+  axes: ['opsz'],
+});
+const body = Hanken_Grotesk({ variable: '--font-body', subsets: ['latin'] });
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+});
+// Only for the handwritten notes on the landing page.
+const handwriting = Caveat({
+  variable: '--font-handwriting',
+  subsets: ['latin'],
+  preload: false,
+});
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params,
+}: LayoutProps<'/[locale]'>): Promise<Metadata> {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    return {};
+  }
+
+  const t = await getTranslations({ locale, namespace: 'metadata' });
+  return {
+    title: { default: t('title'), template: '%s · Complicode' },
+    description: t('description'),
+  };
+}
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#faf7f2' },
+    { media: '(prefers-color-scheme: dark)', color: '#161412' },
+  ],
+};
+
+export default async function RootLayout({
+  children,
+  params,
+}: LayoutProps<'/[locale]'>) {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+  setRequestLocale(locale);
+
+  // Set by proxy.ts; the theme script needs it to pass the CSP.
+  const nonce = (await headers()).get('x-nonce') ?? undefined;
+
+  return (
+    <html
+      lang={locale}
+      data-scroll-behavior="smooth"
+      className={`${display.variable} ${body.variable} ${geistMono.variable} ${handwriting.variable} h-full antialiased`}
+      suppressHydrationWarning
+    >
+      <body className="flex min-h-full flex-col">
+        <NextIntlClientProvider>
+          <ThemeProvider nonce={nonce}>
+            <TooltipProvider>{children}</TooltipProvider>
+            <Toaster position="top-center" richColors closeButton />
+          </ThemeProvider>
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
+}

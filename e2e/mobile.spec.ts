@@ -5,7 +5,7 @@ const noHorizontalScroll = async (page: import('@playwright/test').Page) =>
     () => document.documentElement.scrollWidth <= window.innerWidth,
   );
 
-for (const path of ['/', '/explorar', '/entrar', '/cadastro']) {
+for (const path of ['/pt', '/pt/explorar', '/pt/entrar', '/pt/cadastro']) {
   test(`${path} fits the phone screen`, async ({ page }) => {
     await page.goto(path);
     expect(await noHorizontalScroll(page)).toBe(true);
@@ -14,11 +14,11 @@ for (const path of ['/', '/explorar', '/entrar', '/cadastro']) {
 
 test('the app uses a bottom tab bar on phones', async ({ page }) => {
   await register(page);
-  await page.goto('/app');
+  await page.goto('/pt/app');
 
   const tabs = page.getByRole('navigation', { name: 'Principal' }).last();
   await expect(tabs).toBeVisible();
   await tabs.getByRole('link', { name: 'Gerar' }).click();
-  await expect(page).toHaveURL(/\/app\/gerar$/);
+  await expect(page).toHaveURL(/\/pt\/app\/gerar$/);
   expect(await noHorizontalScroll(page)).toBe(true);
 });

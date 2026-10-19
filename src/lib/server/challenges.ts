@@ -24,6 +24,7 @@ export function toSummary(challenge: ApiChallenge): ChallengeSummary {
     id: challenge.id,
     level: challenge.level,
     status: challenge.status,
+    locale: challenge.locale,
     title: challenge.title,
     projectName: challenge.projectName,
     industry: challenge.industry,

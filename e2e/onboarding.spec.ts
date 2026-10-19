@@ -19,7 +19,7 @@ test('onboarding verifies the email and opens the Telegram step', async ({
   // The right one submits on its own.
   await page.locator('[data-input-otp]').click();
   await page.keyboard.type(code);
-  await expect(page).toHaveURL(/etapa=telefone/, { timeout: 15_000 });
+  await expect(page).toHaveURL(/step=phone/, { timeout: 15_000 });
 
   const telegram = page.getByRole('link', { name: 'Abrir no Telegram' });
   await expect(telegram).toHaveAttribute(
@@ -32,7 +32,7 @@ test('onboarding verifies the email and opens the Telegram step', async ({
 
 test('steps cannot be skipped through the URL', async ({ page }) => {
   await register(page);
-  await page.goto('/boas-vindas?etapa=pronto');
+  await page.goto('/pt/boas-vindas?step=done');
   await expect(
     page.getByRole('heading', { name: 'Confirme seu email' }),
   ).toBeVisible();
@@ -42,6 +42,6 @@ test('the app shows a banner until the account is verified', async ({
   page,
 }) => {
   await register(page);
-  await page.goto('/app');
+  await page.goto('/pt/app');
   await expect(page.getByText('Continuar verificação')).toBeVisible();
 });

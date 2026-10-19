@@ -1,6 +1,7 @@
 'use client';
 
 import { Check } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -18,20 +19,22 @@ function Lines({ widths }: { widths: string[] }) {
   );
 }
 
-const PARTS: {
-  title: string;
-  text: string;
-  preview: ReactNode;
-}[] = [
+type PartKey =
+  | 'context'
+  | 'requirements'
+  | 'whatToUse'
+  | 'deliverables'
+  | 'deadline'
+  | 'guide'
+  | 'evaluation'
+  | 'structure';
+
+/** Decorative previews of each section (the texts are in the messages). */
+const PREVIEWS: { key: PartKey; preview: (deadline: string) => ReactNode }[] = [
+  { key: 'context', preview: () => <Lines widths={['100%', '92%', '60%']} /> },
   {
-    title: 'Contexto real',
-    text: 'A dor de uma empresa, com números, personagens e o que está em jogo. Você sabe por que o sistema existe antes de escrever a primeira linha.',
-    preview: <Lines widths={['100%', '92%', '60%']} />,
-  },
-  {
-    title: 'Requisitos',
-    text: 'Funcionais e não funcionais, com regras e limites claros. Vira um checklist que você marca conforme avança.',
-    preview: (
+    key: 'requirements',
+    preview: () => (
       <span className="block space-y-1.5">
         {[true, true, false].map((done, index) => (
           <span key={index} className="flex items-center gap-2">
@@ -55,9 +58,8 @@ const PARTS: {
     ),
   },
   {
-    title: 'O que usar',
-    text: 'As tecnologias de cada camada e para que cada uma serve. Nada de "use o que quiser".',
-    preview: (
+    key: 'whatToUse',
+    preview: () => (
       <span className="flex flex-wrap gap-1.5 font-mono text-[10px]">
         {['PostgreSQL', 'Redis', 'Docker', 'pytest'].map((name) => (
           <span key={name} className="rounded border bg-muted px-1.5 py-0.5">
@@ -67,24 +69,18 @@ const PARTS: {
       </span>
     ),
   },
+  { key: 'deliverables', preview: () => <Lines widths={['70%', '55%']} /> },
   {
-    title: 'Entregas',
-    text: 'O que precisa estar no repositório no fim: código, testes, documentação e como rodar.',
-    preview: <Lines widths={['70%', '55%']} />,
-  },
-  {
-    title: 'Prazo',
-    text: 'Um tempo de conclusão compatível com o nível, para você treinar estimativa também.',
-    preview: (
+    key: 'deadline',
+    preview: (deadline) => (
       <span className="inline-block rounded-md bg-accent px-2 py-0.5 font-mono text-[11px] text-accent-foreground">
-        2 a 3 semanas
+        {deadline}
       </span>
     ),
   },
   {
-    title: 'Guia de implementação',
-    text: 'Modelagem, integrações, segurança e dicas, na ordem em que fazem sentido.',
-    preview: (
+    key: 'guide',
+    preview: () => (
       <span className="block space-y-1.5 font-mono text-[10px] text-muted-foreground">
         {['1.', '2.', '3.'].map((number, index) => (
           <span key={number} className="flex items-center gap-2">
@@ -98,15 +94,10 @@ const PARTS: {
       </span>
     ),
   },
+  { key: 'evaluation', preview: () => <Lines widths={['85%', '75%']} /> },
   {
-    title: 'Critérios de avaliação',
-    text: 'O que um revisor sênior olharia no seu código. Você sabe o padrão antes de começar.',
-    preview: <Lines widths={['85%', '75%']} />,
-  },
-  {
-    title: 'Estrutura de pastas',
-    text: 'Uma árvore sugerida no padrão do framework, pronta para copiar.',
-    preview: (
+    key: 'structure',
+    preview: () => (
       <span className="block font-mono text-[10px] leading-relaxed text-muted-foreground">
         app/
         <br />
@@ -123,6 +114,8 @@ const PARTS: {
  * stays pinned and highlights the part the reader is on.
  */
 export function BriefingAnatomy() {
+  const t = useTranslations('landing.anatomy');
+  const levels = useTranslations('levels');
   const [active, setActive] = useState(0);
   const steps = useRef<(HTMLLIElement | null)[]>([]);
 
@@ -153,9 +146,9 @@ export function BriefingAnatomy() {
               ticketflow.md
             </p>
             <ol className="mt-3 space-y-1.5">
-              {PARTS.map(({ title, preview }, index) => (
+              {PREVIEWS.map(({ key, preview }, index) => (
                 <li
-                  key={title}
+                  key={key}
                   className={cn(
                     'rounded-xl border border-transparent px-3 py-2.5 transition-all duration-500',
                     index === active
@@ -167,9 +160,9 @@ export function BriefingAnatomy() {
                     <span className="font-mono font-normal text-brand">
                       {String(index + 1).padStart(2, '0')}
                     </span>
-                    {title}
+                    {t(`${key}.title`)}
                   </span>
-                  {preview}
+                  {preview(levels('MID.deadline'))}
                 </li>
               ))}
             </ol>
@@ -178,9 +171,9 @@ export function BriefingAnatomy() {
       </div>
 
       <ol className="space-y-4 lg:space-y-0">
-        {PARTS.map(({ title, text }, index) => (
+        {PREVIEWS.map(({ key }, index) => (
           <li
-            key={title}
+            key={key}
             ref={(node) => {
               steps.current[index] = node;
             }}
@@ -203,10 +196,10 @@ export function BriefingAnatomy() {
                     index !== active && 'lg:text-muted-foreground',
                   )}
                 >
-                  {title}
+                  {t(`${key}.title`)}
                 </h3>
                 <p className="mt-2 max-w-md text-pretty text-muted-foreground lg:text-lg">
-                  {text}
+                  {t(`${key}.text`)}
                 </p>
               </div>
             </div>

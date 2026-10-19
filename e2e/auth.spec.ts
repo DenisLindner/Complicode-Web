@@ -8,14 +8,14 @@ import {
 } from './helpers';
 
 test('protected pages send visitors to the login', async ({ page }) => {
-  await page.goto('/app/desafios');
-  await expect(page).toHaveURL(/\/entrar\?next=%2Fapp%2Fdesafios$/);
+  await page.goto('/pt/app/desafios');
+  await expect(page).toHaveURL(/\/pt\/entrar\?next=%2Fpt%2Fapp%2Fdesafios$/);
 });
 
 test('signup validates on the client before calling the API', async ({
   page,
 }) => {
-  await page.goto('/cadastro');
+  await page.goto('/pt/cadastro');
   await page.getByRole('button', { name: 'Criar conta' }).click();
 
   await expect(page.getByText('Use pelo menos 3 caracteres')).toBeVisible();
@@ -50,16 +50,16 @@ test('signup, logout and login', async ({ page, context }) => {
 
   await page.getByRole('button', { name: 'Menu da conta' }).click();
   await page.getByRole('menuitem', { name: 'Sair' }).click();
-  await expect(page).toHaveURL(/\/$/);
+  await expect(page).toHaveURL(/\/pt$/);
   expect(await context.cookies()).toEqual([]);
 
   await login(page, email);
-  await expect(page).toHaveURL(/\/app$/);
+  await expect(page).toHaveURL(/\/pt\/app$/);
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Olá');
 });
 
 test('wrong password shows a friendly error', async ({ page }) => {
-  await page.goto('/entrar');
+  await page.goto('/pt/entrar');
   await page.getByLabel('Email').fill(uniqueEmail('ghost'));
   await page.getByLabel('Senha', { exact: true }).fill('Errada123');
   await page.getByRole('button', { name: 'Entrar' }).click();
@@ -77,12 +77,12 @@ test('login ignores external ?next redirects', async ({ browser }) => {
 
   const page = await browser.newPage({ extraHTTPHeaders: visitorHeaders() });
   await login(page, email, '//evil.example/phish');
-  await expect(page).toHaveURL(/localhost:3001\/app$/);
+  await expect(page).toHaveURL(/localhost:3001\/pt\/app$/);
   await page.close();
 });
 
 test('logged in users skip the login page', async ({ page }) => {
   await register(page);
-  await page.goto('/entrar');
-  await expect(page).toHaveURL(/\/app$/);
+  await page.goto('/pt/entrar');
+  await expect(page).toHaveURL(/\/pt\/app$/);
 });

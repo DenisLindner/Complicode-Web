@@ -1,11 +1,13 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import type { DocumentSection } from './challenge-document';
 
 /** Sticky section links that follow the reading position. */
 export function TableOfContents({ sections }: { sections: DocumentSection[] }) {
+  const t = useTranslations('challenge.toc');
   const [active, setActive] = useState(sections[0]?.id);
 
   useEffect(() => {
@@ -24,9 +26,9 @@ export function TableOfContents({ sections }: { sections: DocumentSection[] }) {
   }, [sections]);
 
   return (
-    <nav aria-label="Seções do desafio" className="text-sm">
+    <nav aria-label={t('aria')} className="text-sm">
       <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-        Nesta página
+        {t('title')}
       </p>
       <ul className="space-y-1 border-l">
         {sections.map(({ id, title }) => (

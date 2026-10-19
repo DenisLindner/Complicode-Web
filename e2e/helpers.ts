@@ -26,28 +26,34 @@ export function uniqueEmail(prefix = 'e2e') {
   return `${prefix}.${Date.now()}.${Math.floor(Math.random() * 1e6)}@example.com`;
 }
 
+/**
+ * The pages are tested in Portuguese (the language of the first version):
+ * the browser sends pt-BR and the URLs carry the `/pt` prefix. The English
+ * and Spanish interfaces are covered by i18n.spec.ts.
+ */
+
 /** Creates an account through the form; ends on the onboarding. */
 export async function register(page: Page, email = uniqueEmail()) {
-  await page.goto('/cadastro');
+  await page.goto('/pt/cadastro');
   await page.getByLabel('Nome').fill('Teste E2E');
   await page.getByLabel('Email').fill(email);
   await page.getByLabel('Senha', { exact: true }).fill(PASSWORD);
   await page.getByRole('button', { name: 'Criar conta' }).click();
-  await expect(page).toHaveURL(/\/boas-vindas$/, { timeout: 20_000 });
+  await expect(page).toHaveURL(/\/pt\/boas-vindas$/, { timeout: 20_000 });
   return email;
 }
 
 export async function login(page: Page, email: string, next?: string) {
   await page.goto(
-    next ? `/entrar?next=${encodeURIComponent(next)}` : '/entrar',
+    next ? `/pt/entrar?next=${encodeURIComponent(next)}` : '/pt/entrar',
   );
   await page.getByLabel('Email').fill(email);
   await page.getByLabel('Senha', { exact: true }).fill(PASSWORD);
   await page.getByRole('button', { name: 'Entrar' }).click();
 }
 
-/** The 6-digit code from the verification email caught by Mailpit. */
-export async function emailCode(email: string) {
+/** The subject of the latest email caught by Mailpit for the address. */
+export async function emailSubject(email: string) {
   await expect
     .poll(
       async () => {
@@ -57,15 +63,26 @@ export async function emailCode(email: string) {
         const data = (await response.json()) as {
           messages: { Subject: string }[];
         };
-        return data.messages[0]?.Subject.match(/\d{6}/)?.[0] ?? '';
+        return data.messages[0]?.Subject ?? '';
       },
       { timeout: 15_000 },
     )
-    .toMatch(/^\d{6}$/);
+    .not.toBe('');
 
   const response = await fetch(
     `${MAILPIT_URL}/api/v1/search?query=${encodeURIComponent(email)}`,
   );
   const data = (await response.json()) as { messages: { Subject: string }[] };
-  return data.messages[0].Subject.match(/\d{6}/)![0];
+  return data.messages[0].Subject;
+}
+
+/** The 6-digit code from the verification email caught by Mailpit. */
+export async function emailCode(email: string) {
+  await expect
+    .poll(async () => (await emailSubject(email)).match(/\d{6}/)?.[0] ?? '', {
+      timeout: 15_000,
+    })
+    .toMatch(/^\d{6}$/);
+
+  return (await emailSubject(email)).match(/\d{6}/)![0];
 }

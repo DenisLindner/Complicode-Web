@@ -1,8 +1,16 @@
-import Link from 'next/link';
+import { useFormatter, useLocale, useTranslations } from 'next-intl';
 import { StackIcon } from '@/components/stack-icon';
-import { formatDate } from '@/lib/format';
+import { Link } from '@/i18n/navigation';
+import { stackLabel } from '@/i18n/stack-label';
 import type { ChallengeSummary } from '@/lib/types/challenge';
-import { LevelBadge, PublicBadge, StatusBadge } from './challenge-badges';
+import {
+  LanguageBadge,
+  LevelBadge,
+  PublicBadge,
+  StatusBadge,
+} from './challenge-badges';
+
+type ChallengeHref = Parameters<typeof Link>[0]['href'];
 
 export function ChallengeCard({
   challenge,
@@ -10,10 +18,22 @@ export function ChallengeCard({
   showVisibility = false,
 }: {
   challenge: ChallengeSummary;
-  href: string;
+  href: ChallengeHref;
   showVisibility?: boolean;
 }) {
-  const title = challenge.title ?? 'Gerando desafio…';
+  const t = useTranslations('challengeCard');
+  const stacks = useTranslations('stacks');
+  const format = useFormatter();
+  const locale = useLocale();
+
+  const stackName = stackLabel(
+    stacks,
+    challenge.stack.slug,
+    challenge.stack.name,
+  );
+  const title = challenge.title ?? t('generating');
+  // The text of the card is in the language of the challenge.
+  const otherLanguage = challenge.locale !== locale;
 
   return (
     <Link
@@ -22,14 +42,18 @@ export function ChallengeCard({
     >
       <div className="mb-3 flex items-center justify-between gap-2">
         <span className="truncate font-mono text-[11px] tracking-wide text-muted-foreground uppercase">
-          {challenge.industry ?? challenge.stack.name}
+          {challenge.industry ?? stackName}
         </span>
         <div className="flex shrink-0 items-center gap-1.5">
           <StatusBadge status={challenge.status} />
+          {otherLanguage && <LanguageBadge locale={challenge.locale} />}
           {showVisibility && challenge.public && <PublicBadge />}
         </div>
       </div>
-      <h3 className="line-clamp-2 font-semibold text-balance group-hover:text-brand">
+      <h3
+        lang={challenge.locale}
+        className="line-clamp-2 font-semibold text-balance group-hover:text-brand"
+      >
         {title}
       </h3>
       {challenge.projectName && challenge.projectName !== challenge.title && (
@@ -38,7 +62,10 @@ export function ChallengeCard({
         </p>
       )}
       {challenge.summary && (
-        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+        <p
+          lang={challenge.locale}
+          className="mt-2 line-clamp-2 text-sm text-muted-foreground"
+        >
           {challenge.summary}
         </p>
       )}
@@ -53,7 +80,7 @@ export function ChallengeCard({
         <span className="flex shrink-0 items-center gap-2">
           <LevelBadge level={challenge.level} />
           <time dateTime={challenge.createdAt}>
-            {formatDate(challenge.createdAt)}
+            {format.dateTime(new Date(challenge.createdAt), 'short')}
           </time>
         </span>
       </div>
